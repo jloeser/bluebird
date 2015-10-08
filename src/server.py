@@ -3,12 +3,11 @@
 #
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
-import config
-from flask import Flask
+from flask import Flask, url_for, Blueprint
 
 app = Flask(__name__)
 
-@app.route(config.ROOT)
+@app.route('/')
 def show_root():
     return "root"
 

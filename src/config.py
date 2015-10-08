@@ -14,10 +14,12 @@ SERVER_SSL_KEY = '../server.key'
 
 MAJOR_VERSION = 0
 MINOR_VERSION = 1
+PROTOCOL_VERSION = 1
 
 VERSION = "{}.{}".format(MAJOR_VERSION, MINOR_VERSION)
 
 USER = 'root'
 PASS = 'test'
 
-ROOT = '/rest/v1/'
+ROOT_URL = '/rest'
+SERVICEROOT_URL = "{}/v{}/".format(ROOT_URL, PROTOCOL_VERSION)

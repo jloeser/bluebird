@@ -32,6 +32,8 @@ def main(module):
         ))
         sys.exit(1)
 
+    server.app.register_blueprint(getattr(module, module.NAME))
+    server.app.config.from_object(config)
     server.app.run()
 
 

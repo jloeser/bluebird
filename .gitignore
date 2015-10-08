@@ -55,3 +55,11 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Vim
+*.swp
+
+# Stuff
+*.crt
+*.key
+*.pem

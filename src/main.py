@@ -24,13 +24,15 @@ def main(module):
     try:
         module = import_module(module + '.main')
         logger.debug("Module '{}' found.".format(
-            module.NAME
+                module.NAME
         ))
     except ImportError:
         logger.error("Couldn't find module '{}'. Exit.".format(
             module
         ))
         sys.exit(1)
+
+    server.app.config['DEBUG'] = True
 
     server.app.register_blueprint(getattr(module, module.NAME))
     server.app.config.from_object(config)
@@ -64,7 +66,7 @@ modules have been found:\n\n{}".format('\n'.join(probe_modules()))
             '--version',
             action="version",
             version="Copyright (c) 2015 SUSE LINUX GmbH\n{} v{}".format(
-                    config.PROGRAM_NAME, config.VERSION
+                    config.PROGRAM_NAME, config.PROGRAM_VERSION
             ),
             help="Show version."
     )

@@ -1,0 +1,35 @@
+{
+    "Name": "Virtual Redfish RESTful Root Service",
+    "Oem": {
+        "SUSE": {
+            "Sessions": {
+                "LoginHint": {
+                    "Hint": "POST to /Sessions to login using the following JSON object:",
+                    "HintPOSTData": {
+                        "Password": "password",
+                        "UserName": "username"
+                    }
+                },
+                "ServerName": "{{server.hostname}}"
+            }
+        }
+    },
+    "ServiceVersion": "service.version",
+    "Time": "datetime",
+    "Type": "service.document",
+    "UUID": "uuid",
+    "links": {
+        "Chassis": {
+            "href": "/rest/v1/Chassis"
+        },
+        "Sessions": {
+            "href": "/rest/v1/Sessions"
+        },
+        "Systems": {
+            "href": "/rest/v1/Systems"
+        },
+        "self": {
+            "href": "/rest/v1"
+        }
+    }
+}

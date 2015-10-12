@@ -36,11 +36,10 @@ def set_json_header(response):
 
 @server.route('/rest')
 def show_version():
-    response = make_response(render_template('version.json',
+    return render_template('version.json',
         version=current_app.config['VERSION_STR'],
         url=current_app.config['SERVICEROOT_URL']
-        ))
-    return response
+     )
 
 @server.route('/rest/v1')
 def redirect_serviceroot():
@@ -48,8 +47,7 @@ def redirect_serviceroot():
 
 @server.route('/rest/v1/')
 def show_serviceroot():
-    response = make_response(render_template('serviceroot.json',
+    return render_template('serviceroot.json',
             server=g.server
-    ))
-    return response
+    )
 

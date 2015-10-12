@@ -9,8 +9,10 @@ if not sys.version_info[0] >= 3:
     sys.exit(1)
 import config
 import log
-import server
+from server import server
+from session import session
 from importlib import import_module
+from flask import Flask, request
 import argparse
 
 logger = log.getLogger()
@@ -32,12 +34,14 @@ def main(module):
         ))
         sys.exit(1)
 
-    server.app.config['DEBUG'] = True
+    app = Flask(__name__)
+    app.config['DEBUG'] = True
 
-    server.app.register_blueprint(getattr(module, module.NAME))
-    server.app.config.from_object(config)
-    server.app.run()
-
+    app.register_blueprint(server)
+    app.register_blueprint(session)
+    app.register_blueprint(getattr(module, module.NAME))
+    app.config.from_object(config)
+    app.run()
 
 if __name__ == '__main__':
 

@@ -4,10 +4,10 @@
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
 from flask import Flask, url_for, Blueprint, render_template, jsonify,\
-        redirect, make_response, g
+        redirect, make_response, g, current_app
 import socket
 
-app = Flask(__name__)
+server = Blueprint('server', __name__, template_folder='templates')
 
 class Server():
 
@@ -25,28 +25,31 @@ class Server():
         self.hostname = socket.getfqdn()
 
 
-@app.before_request
-def before_request():
+@server.before_request
+def set_server_object():
     g.server = Server()
 
-@app.route('/rest')
-def show_version():
-    response = make_response(render_template('version.json',
-        version=app.config['VERSION_STR'],
-        url=app.config['SERVICEROOT_URL']
-        ))
+@server.after_request
+def set_json_header(response):
     response.headers['Content-Type'] = 'application/json'
     return response
 
-@app.route('/rest/v1')
-def redirect_serviceroot():
-    return redirect(app.config['SERVICEROOT_URL'])
+@server.route('/rest')
+def show_version():
+    response = make_response(render_template('version.json',
+        version=current_app.config['VERSION_STR'],
+        url=current_app.config['SERVICEROOT_URL']
+        ))
+    return response
 
-@app.route('/rest/v1/')
+@server.route('/rest/v1')
+def redirect_serviceroot():
+    return redirect(current_app.config['SERVICEROOT_URL'])
+
+@server.route('/rest/v1/')
 def show_serviceroot():
     response = make_response(render_template('serviceroot.json',
             server=g.server
     ))
-    response.headers['Content-Type'] = 'application/json'
     return response
 

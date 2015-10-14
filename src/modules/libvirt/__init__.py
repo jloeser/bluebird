@@ -5,4 +5,7 @@
 # Published under the GNU Public Licence 2
 NAME = 'libvirt'
 
+import os
+TEMPLATES = os.path.dirname(__file__) + '/templates'
+
 from .views import module

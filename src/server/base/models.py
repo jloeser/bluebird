@@ -15,10 +15,8 @@ class Server():
             cls._instance = super(Server, cls).__new__(
                     cls, *args, **kwargs
             )
+        Server._hostname = socket.getfqdn()
         return cls._instance
 
-    def __init__(self):
-        self._hostname = socket.getfqdn()
-
-    def getfqdn(self):
+    def get_fqdn(self):
         return self._hostname

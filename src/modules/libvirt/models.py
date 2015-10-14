@@ -53,8 +53,7 @@ class Libvirt():
     def _collect_domains(self):
         if self._conn.listAllDomains():
             for domain in self._conn.listAllDomains():
-                self._domains[domain.UUIDString()] =\
-                        [domain, domain.ID(), domain.isActive()]
+                self._domains[domain.UUIDString()] = domain
 
     def _probe(self):
         self._collect_domains()
@@ -70,3 +69,24 @@ class Libvirt():
             return version
         else:
             raise TypeError
+
+    def get_domains(self):
+        for uuid, domain in self._domains.items():
+            yield domain
+
+    def get_domain(self, name):
+        for uuid, domain in self._domains.items():
+            if domain.name() == name:
+                return domain
+
+    def start(self, uuid):
+        pass
+
+    def reboot(self, uuid):
+        pass
+
+    def shutdown(self, uuid):
+        pass
+
+    def destroy(self, uuid):
+        pass

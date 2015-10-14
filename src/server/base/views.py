@@ -32,5 +32,5 @@ def redirect_serviceroot():
 @module.route(URL['SERVICEROOT'] + '/')
 def show_serviceroot():
     return render_template('base/serviceroot.json',
-            server=g.server.getfqdn()
+            server=g.server.get_fqdn()
     )

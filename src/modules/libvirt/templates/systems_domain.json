@@ -1,0 +1,172 @@
+{
+  "Type": "ComputerSystem.0.9.7",
+  "Description": "Computer System View",
+  "Power": "{{ domain.isActive() }}",
+  "AssetTag": "                                ",
+  "HostCorrelation": {
+    "HostName": "{{ hostname }}",
+    "IPAddress": [
+      "",
+      ""
+    ],
+    "HostMACAddress": [
+      "9c:8e:99:6e:15:14",
+      "9c:8e:99:6e:15:15"
+    ]
+  },
+  "links": {
+    "self": {
+      "href": "/rest/v1/Systems/1"
+    },
+    "Chassis": [
+      {
+        "href": "/rest/v1/Chassis/1"
+      }
+    ]
+  },
+  "IndicatorLED": "Off",
+  "UUID": "37363836-3137-4D32-3232-323130315254",
+  "Bios": {
+    "Current": {
+      "VersionString": "J02 04/04/2012"
+    }
+  },
+  "Name": "Computer System",
+  "Oem": {
+    "Hp": {
+      "IntelligentProvisioningIndex": 3,
+      "PowerAutoOn": "Restore",
+      "ServerSignature": 0,
+      "links": {
+        "SmartStorage": {
+          "href": "/rest/v1/Systems/1/SmartStorage"
+        },
+        "PCISlots": {
+          "href": "/rest/v1/Systems/1/PCISlots"
+        },
+        "BIOS": {
+          "href": "/rest/v1/Systems/1/Bios"
+        },
+        "PCIDevices": {
+          "href": "/rest/v1/Systems/1/PCIDevices"
+        },
+        "Memory": {
+          "href": "/rest/v1/Systems/1/Memory"
+        },
+        "NetworkAdapters": {
+          "href": "/rest/v1/Systems/1/NetworkAdapters"
+        }
+      },
+      "PowerAllocationLimit": null,
+      "Battery": [],
+      "Type": "HpComputerSystemExt.0.10.3",
+      "PowerRegulatorModesSupported": [
+        "OSControl",
+        "Dynamic",
+        "Max",
+        "Min"
+      ],
+      "VirtualProfile": "Inactive",
+      "PowerOnDelay": "Minimum",
+      "Bios": {
+        "Current": {
+          "Date": "04/04/2012",
+          "VersionString": "J02 04/04/2012",
+          "Family": "J02"
+        },
+        "Bootblock": {
+          "Date": "03/11/2012",
+          "VersionString": "J02 03/11/2012",
+          "Family": "J02"
+        },
+        "Backup": {
+          "Date": "04/04/2012",
+          "VersionString": "J02 04/04/2012",
+          "Family": "J02"
+        },
+        "UefiClass": 0
+      },
+      "IntelligentProvisioningVersion": "N/A",
+      "VirtualUUID": null,
+      "AvailableActions": [
+        {
+          "Action": "PowerButton",
+          "Capabilities": [
+            {
+              "AllowableValues": [
+                "Press",
+                "PressAndHold"
+              ],
+              "PropertyName": "PushType"
+            },
+            {
+              "AllowableValues": [
+                "/Oem/Hp"
+              ],
+              "PropertyName": "Target"
+            }
+          ]
+        },
+        {
+          "Action": "SystemReset",
+          "Capabilities": [
+            {
+              "AllowableValues": [
+                "ColdBoot"
+              ],
+              "PropertyName": "ResetType"
+            },
+            {
+              "AllowableValues": [
+                "/Oem/Hp"
+              ],
+              "PropertyName": "Target"
+            }
+          ]
+        }
+      ],
+      "TrustedModules": [
+        {
+          "Status": "NotPresent"
+        }
+      ],
+      "PostState": "FinishedPost",
+      "IntelligentProvisioningLocation": "System Board",
+      "PowerRegulatorMode": "Dynamic"
+    }
+  },
+  "Memory": {
+    "Status": {
+      "HealthRollUp": "OK"
+    },
+    "TotalSystemMemoryGB": 16
+  },
+  "AvailableActions": [
+    {
+      "Action": "Reset",
+      "Capabilities": [
+        {
+          "AllowableValues": [
+            "On",
+            "ForceOff",
+            "ForceRestart",
+            "Nmi",
+            "PushPowerButton"
+          ],
+          "PropertyName": "ResetType"
+        }
+      ]
+    }
+  ],
+  "SystemType": "Physical",
+  "Processors": {
+    "Count": 2,
+    "Status": {
+      "HealthRollUp": "OK"
+    },
+    "ProcessorFamily": " Intel(R) Xeon(R) CPU E5-2450 0 @ 2.10GHz       "
+  },
+  "Model": "ProLiant ML350e Gen8",
+  "Manufacturer": "HP"
+}
+

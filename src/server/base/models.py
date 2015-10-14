@@ -20,3 +20,6 @@ class Server():
 
     def get_fqdn(self):
         return self._hostname
+
+    def get_ip(self):
+        return socket.gethostbyname(self._hostname)

@@ -30,6 +30,6 @@ def show_domains(domain):
     domain = g.libvirt.get_domain(domain)
     return render_template('systems_domain.json',
             domain=domain,
-            hostname=Server().get_fqdn()
+            server=Server()
     )
 

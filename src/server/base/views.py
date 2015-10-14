@@ -13,11 +13,6 @@ module = Blueprint('base', __name__)
 def set_server_object():
     g.server = Server()
 
-@module.after_request
-def set_json_header(response):
-    response.headers['Content-Type'] = 'application/json'
-    return response
-
 @module.route(URL['ROOT'])
 def show_version():
     return render_template('base/version.json',

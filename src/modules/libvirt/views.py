@@ -16,11 +16,6 @@ module = Blueprint('system', __name__, url_prefix=URL['SERVICEROOT'],
 def set_libvirt_object():
     g.libvirt = Libvirt()
 
-@module.after_request
-def set_json_header(response):
-    response.headers['Content-Type'] = 'application/json'
-    return response
-
 @module.route('/Systems')
 def list_domains():
     return render_template('systems.json', libvirt=g.libvirt)

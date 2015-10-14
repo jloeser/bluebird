@@ -19,9 +19,6 @@
     "Type": "service.document",
     "UUID": "uuid",
     "links": {
-        "Chassis": {
-            "href": "/rest/v1/Chassis"
-        },
         "Sessions": {
             "href": "/rest/v1/Sessions"
         },

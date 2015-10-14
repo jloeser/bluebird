@@ -5,12 +5,19 @@
 # Published under the GNU Public Licence 2
 PROGRAM_NAME = 'redfish-server'
 PROGRAM_NAME_SHORT = 'rfserver'
-ROOT_LOGGER = 'rfserver'
 
-SERVER_ADDRESS = '0.0.0.0'
-SERVER_PORT = 4443
-SERVER_SSL_CRT = '../server.crt'
-SERVER_SSL_KEY = '../server.key'
+LOGGER = {
+        'NAME': PROGRAM_NAME_SHORT,
+        'LEVEL': 'INFO'
+}
+
+SERVER = {
+        'ADDRESS': '0.0.0.0',
+        'PORT': 4443,
+        'SSL_CRT': '../server.crt',
+        'SSL_KEY': '../server.key',
+        'DEBUG': True
+}
 
 MAJOR_VERSION = 0
 MINOR_VERSION = 1
@@ -22,5 +29,7 @@ VERSION_STR = "v" + str(PROTOCOL_VERSION)
 USER = 'root'
 PASS = 'test'
 
-ROOT_URL = '/rest'
-SERVICEROOT_URL = "{}/v{}/".format(ROOT_URL, PROTOCOL_VERSION)
+URL = {
+        'ROOT': '/rest',
+        'SERVICEROOT': '/rest/v{}'.format(PROTOCOL_VERSION)
+}

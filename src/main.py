@@ -9,11 +9,10 @@ if not sys.version_info[0] >= 3:
     sys.exit(1)
 import config
 import log
-from server import server
-from session import session
 from importlib import import_module
-from flask import Flask, request
+from flask import Flask
 import argparse
+from server import app
 
 logger = log.getLogger()
 
@@ -24,9 +23,9 @@ def probe_modules():
 
 def main(module):
     try:
-        module = import_module(module + '.main')
+        system = import_module(module)
         logger.debug("Module '{}' found.".format(
-                module.NAME
+                system.NAME
         ))
     except ImportError:
         logger.error("Couldn't find module '{}'. Exit.".format(
@@ -34,13 +33,10 @@ def main(module):
         ))
         sys.exit(1)
 
-    app = Flask(__name__)
-    app.config['DEBUG'] = True
-
-    app.register_blueprint(server)
-    app.register_blueprint(session)
-    app.register_blueprint(getattr(module, module.NAME))
+    app.register_blueprint(system.views.module)
     app.config.from_object(config)
+    if app.config['SERVER']['DEBUG']:
+        app.config['DEBUG'] = True
     app.run()
 
 if __name__ == '__main__':

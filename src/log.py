@@ -11,14 +11,14 @@ if __name__ == '__main__':
     print("Error: module must be imported")
     sys.exit(1)
 
-def getLogger(name=config.ROOT_LOGGER):
+def getLogger(name=config.LOGGER['NAME']):
     logging.setLoggerClass(Logger)
     logger = logging.getLogger(name)
     return logger
 
 class Logger(logging.Logger):
 
-    def __init__(self, name, level='INFO'):
+    def __init__(self, name, level=config.LOGGER['LEVEL']):
         logging.Logger.__init__(self, name, logging.DEBUG)
         self.setLevel(level)
 

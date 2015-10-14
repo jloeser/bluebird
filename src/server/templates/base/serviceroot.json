@@ -10,7 +10,7 @@
                         "UserName": "username"
                     }
                 },
-                "ServerName": "{{server.hostname}}"
+                "ServerName": "{{server}}"
             }
         }
     },

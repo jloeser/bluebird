@@ -21,7 +21,7 @@ def probe_modules():
     modules = ['modules.libvirt']
     return modules
 
-def main(module):
+def main(module, use_ssl=True):
     try:
         system = import_module(module)
         logger.debug("Module '{}' found.".format(
@@ -37,7 +37,18 @@ def main(module):
     app.config.from_object(config)
     if app.config['SERVER']['DEBUG']:
         app.config['DEBUG'] = True
-    app.run()
+
+    if use_ssl:
+        encryption = (config.SERVER['SSL_CRT'], config.SERVER['SSL_KEY'])
+    else:
+        logger.warning("No SSL encryption!")
+        encryption = None
+
+    app.run(
+            host=config.SERVER['ADDRESS'],
+            port=config.SERVER['PORT'],
+            ssl_context=encryption
+    )
 
 if __name__ == '__main__':
 
@@ -58,13 +69,13 @@ modules have been found:\n\n{}".format('\n'.join(probe_modules()))
     parser.add_argument(
             '-h',
             '--help',
-            action="store_true",
+            action='store_true',
             help="Show this help message and exit."
     )
     parser.add_argument(
             '-v',
             '--version',
-            action="version",
+            action='version',
             version="Copyright (c) 2015 SUSE LINUX GmbH\n{} v{}".format(
                     config.PROGRAM_NAME, config.PROGRAM_VERSION
             ),
@@ -73,8 +84,13 @@ modules have been found:\n\n{}".format('\n'.join(probe_modules()))
     parser.add_argument(
             '-d',
             '--debug',
-            action="store_true",
+            action='store_true',
             help="Show debug messages."
+    )
+    parser.add_argument(
+            '--no-ssl',
+            action='store_true',
+            help="Disable SSL encryption."
     )
 
     args = parser.parse_args()
@@ -88,4 +104,4 @@ modules have been found:\n\n{}".format('\n'.join(probe_modules()))
     if args.debug:
         logger.setLevel('DEBUG')
 
-    main(args.module)
+    main(args.module, use_ssl=not args.no_ssl)

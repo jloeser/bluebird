@@ -3,6 +3,6 @@
 #
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
-from .views import module
-
 NAME = 'libvirt'
+
+from .views import module

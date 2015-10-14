@@ -4,18 +4,20 @@
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
 import libvirt
-import logging
+import log
+from . import NAME
 
 LIBVIRT_URI = 'qemu:///system'
 ACTIVE = 0
 INACTIVE = 1
 
-logger = logging.getLogger()
-logger.setLevel(logging.getLogger().getEffectiveLevel())
+logger = log.getLogger(NAME)
+logger.setLevel(log.getLogger().getEffectiveLevel())
 
 class Libvirt():
 
     _instance = None
+    _initialized = False
     _conn = None
     _domains = {}
 
@@ -23,30 +25,30 @@ class Libvirt():
         if not cls._instance:
             cls._instance = super(Libvirt, cls).__new__(
                     cls, *args, **kwargs
-
             )
         return cls._instance
 
     def __init__(self):
-        print('dd')
-        try:
-            self._conn = libvirt.open(LIBVIRT_URI)
-        except libvirt.libvirtError:
-            raise NoSystemFoundException
+        if not Libvirt._initialized:
+            try:
+                self._conn = libvirt.open(LIBVIRT_URI)
+            except libvirt.libvirtError:
+                raise NoSystemFoundException
 
-        if not self._conn:
-            raise NoSystemFoundException
+            if not self._conn:
+                raise NoSystemFoundException
 
-        self._domains = {}
-        logger.info("Running hypervisor: {0} {1}".format(
-                self._conn.getType(),
-                self._get_version_str(self._conn.getVersion())
-        ))
-        logger.debug("Library: {}".format(
-                self._get_version_str(self._conn.getLibVersion())
-        ))
+            self._domains = {}
+            logger.info("Running hypervisor: {0} {1}".format(
+                    self._conn.getType(),
+                    self._get_version_str(self._conn.getVersion())
+            ))
+            logger.debug("Library: {}".format(
+                    self._get_version_str(self._conn.getLibVersion())
+            ))
 
-        self._probe()
+            self._probe()
+            Libvirt._initialized = True
 
     def _collect_domains(self):
         if self._conn.listAllDomains():

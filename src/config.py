@@ -31,5 +31,7 @@ PASS = 'test'
 
 URL = {
         'ROOT': '/rest',
-        'SERVICEROOT': '/rest/v{}'.format(PROTOCOL_VERSION)
+        'SERVICEROOT': '/rest/v{}'.format(PROTOCOL_VERSION),
+        'SESSIONS': '/rest/v{}/Sessions'.format(PROTOCOL_VERSION),
+        'SYSTEMS': '/rest/v{}/Systems'.format(PROTOCOL_VERSION)
 }

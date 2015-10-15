@@ -6,9 +6,15 @@
 import os
 import sys
 
-from flask import Flask, request, abort
+from flask import Flask, request, abort, g
+
+from server.sessions.models import Session
 
 app = Flask(__name__)
+
+@app.before_request
+def set_session_object():
+    g.session = Session()
 
 # only accept JSON on POST data
 @app.before_request

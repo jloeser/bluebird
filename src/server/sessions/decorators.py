@@ -12,8 +12,9 @@ def login_required(f):
     def decorated_function(*args, **kwargs):
         g.xauth = request.headers.get('X-Auth-Token')
         if g.xauth is not None:
-            g.session = Session()
-            if g.session.is_valid(g.xauth):
+            result = g.session.check(g.xauth)
+            if result:
+                g.login = result
                 return f(*args, **kwargs)
         abort(401)
     return decorated_function

@@ -36,10 +36,12 @@ def create_session():
 @module.route(URL['SESSIONS'], methods=['GET'])
 @login_required
 def show_session():
-    return render_template('sessions/session_show.json',
-            id=g.login['ID'],
-            username=g.login['USERNAME']
-    )
+    if g.login:
+        return render_template('sessions/session_show.json',
+                id=g.login['ID'],
+                username=g.login['USERNAME']
+        )
+    return ('', 200)
 
 @module.route(URL['SESSIONS'] + '/<id>', methods=['DELETE'])
 def delete_session(id):

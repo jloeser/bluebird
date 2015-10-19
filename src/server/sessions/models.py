@@ -4,6 +4,7 @@
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
 import log
+import base64
 from hashlib import md5
 from time import time
 from datetime import datetime, timedelta
@@ -32,7 +33,7 @@ class Session():
             logger.debug("Initialized.")
             Session._initialized = True
 
-    def check(self, xauth):
+    def check_xauth(self, xauth):
         for id, data in self._sessions.items():
             if data['X-AUTH'] == xauth:
                 current = datetime.fromtimestamp(time())
@@ -49,6 +50,15 @@ class Session():
                     break
 
         logger.debug("'{}' is invalid.".format(xauth))
+        return False
+
+    def check_basic_auth(self, basic_auth):
+        prefix, credential = basic_auth.split(' ')
+        if prefix == 'Basic':
+            credential = base64.b64decode(credential).decode('utf-8')
+            username, password = credential.split(':')
+            if username == USER and password == PASS:
+                return True
         return False
 
     def create(self, username, password):

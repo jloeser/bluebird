@@ -123,6 +123,36 @@ class SessionTestCase(unittest.TestCase):
         response = self.app.delete(self._url + '/1234')
         assert response.status_code == 200
 
+    def test_basic_auth(self):
+        """
+        Service shall support "Basic Authentication" (RFC 2617, Section 2).
+        Services shall not require a client to create a session when Basic
+        Auth is used.
+        """
+        import base64
+
+        basic_auth = b'Basic ' + base64.b64encode(
+                bytes(config.USER + 'x', 'utf-8') +
+                b':' +
+                bytes(config.PASS, 'utf-8')
+        )
+        response = self.app.get(
+                self._url,
+                headers={'Authorization': bytes.decode(basic_auth)}
+        )
+        assert response.status_code == 401
+
+        basic_auth = b'Basic ' + base64.b64encode(
+                bytes(config.USER, 'utf-8') +
+                b':' +
+                bytes(config.PASS, 'utf-8')
+        )
+
+        response = self.app.get(
+                self._url,
+                headers={'Authorization': bytes.decode(basic_auth)}
+        )
+        assert response.status_code == 200
 
 if __name__ == '__main__':
     server.app.config['TESTING'] = True

@@ -11,10 +11,18 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         g.xauth = request.headers.get('X-Auth-Token')
-        if g.xauth is not None:
-            result = g.session.check(g.xauth)
+        if g.xauth:
+            result = g.session.check_xauth(g.xauth)
             if result:
                 g.login = result
                 return f(*args, **kwargs)
+
+        g.basic_auth = request.headers.get('Authorization')
+        if g.basic_auth:
+            result = g.session.check_basic_auth(g.basic_auth)
+            if result:
+                g.login = None
+                return f(*args, **kwargs)
+
         abort(401)
     return decorated_function

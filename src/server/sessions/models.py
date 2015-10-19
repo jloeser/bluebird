@@ -40,7 +40,7 @@ class Session():
                 time_diff = current - timestamp
                 if time_diff.min < timedelta(minutes=self._session_timeout_min):
                     logger.debug("'{}' is valid.".format(xauth))
-                    data['TIME'] = current
+                    data['TIME'] = time()
                     data['ID'] = id
                     return data
                 else:

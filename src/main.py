@@ -14,7 +14,7 @@ from flask import Flask
 import argparse
 from server import app
 
-logger = log.getLogger()
+logger = log.get_logger()
 
 def probe_modules():
     # TODO: probe for installed modules
@@ -102,6 +102,6 @@ modules have been found:\n\n{}".format('\n'.join(probe_modules()))
 
     # enable debug messages
     if args.debug:
-        logger.setLevel('DEBUG')
+        log.set_level('DEBUG')
 
     main(args.module, use_ssl=not args.no_ssl)

@@ -10,8 +10,7 @@ from time import time
 from datetime import datetime, timedelta
 from config import USER, PASS
 
-logger = log.getLogger('session')
-logger.setLevel(log.getLogger().getEffectiveLevel())
+logger = log.get_logger('session')
 
 class Session():
 

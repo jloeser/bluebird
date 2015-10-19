@@ -11,8 +11,7 @@ LIBVIRT_URI = 'qemu:///system'
 ACTIVE = 0
 INACTIVE = 1
 
-logger = log.getLogger(NAME)
-logger.setLevel(log.getLogger().getEffectiveLevel())
+logger = log.get_logger(NAME)
 
 class Libvirt():
 

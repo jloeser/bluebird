@@ -120,6 +120,9 @@ class SessionTestCase(unittest.TestCase):
         response = self.app.delete(location)
         assert response.status_code == 200
 
+        response = self.app.delete(self._url + '/1234')
+        assert response.status_code == 200
+
 
 if __name__ == '__main__':
     server.app.config['TESTING'] = True

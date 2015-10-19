@@ -4,7 +4,7 @@
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
 from config import URL
-from flask import Blueprint, jsonify, g, render_template
+from flask import Blueprint, jsonify, g, render_template, abort
 from server.base.models import Server
 from .models import Libvirt
 from . import TEMPLATES
@@ -20,11 +20,14 @@ def set_libvirt_object():
 def list_domains():
     return render_template('systems.json', libvirt=g.libvirt)
 
-@module.route('/Systems/<domain>')
+@module.route('/Systems/<domain>', methods=['GET', 'POST'])
 def show_domains(domain):
     domain = g.libvirt.get_domain(domain)
-    return render_template('systems_domain.json',
-            domain=domain,
-            server=Server()
-    )
+    if domain:
+        return render_template('systems_domain.json',
+                domain=domain,
+                server=Server()
+        )
+    else:
+        abort(404)
 

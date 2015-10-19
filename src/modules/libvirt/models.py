@@ -69,6 +69,9 @@ class Libvirt():
             return version
         else:
             raise TypeError
+    @property
+    def domains(self):
+        return self._domains
 
     def get_domains(self):
         for uuid, domain in self._domains.items():
@@ -78,6 +81,7 @@ class Libvirt():
         for uuid, domain in self._domains.items():
             if domain.name() == name:
                 return domain
+        return None
 
     def start(self, uuid):
         pass

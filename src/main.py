@@ -17,11 +17,25 @@ from server import app
 logger = log.get_logger()
 
 def probe_modules():
+    """
+    Probe for available modules on the system.
+
+    return: [] -- list of str which can be imported via import_module()
+    """
     # TODO: probe for installed modules
     modules = ['modules.libvirt']
     return modules
 
 def main(module, use_ssl=True):
+    """
+    Main function.
+
+    Import the selected module as backend for the server and start the
+    webserver.
+
+    param: module -- str; backend module to be used
+    param: use_ssl -- bool; activates/deactivates SSL support (default True)
+    """
     try:
         system = import_module(module)
         logger.debug("Module '{}' found.".format(
@@ -51,8 +65,10 @@ def main(module, use_ssl=True):
     )
 
 if __name__ == '__main__':
+    """
+    Parse command line arguments and call main function.
+    """
 
-    # define and handle arguments
     parser = argparse.ArgumentParser(
             prog=config.PROGRAM_NAME,
             formatter_class=argparse.RawTextHelpFormatter,

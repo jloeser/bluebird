@@ -21,10 +21,10 @@ def get_logger(name=config.LOGGER['NAME'], level=config.LOGGER['LEVEL']):
     As long as global _level variable is None, we use the level parameter for
     the log level to be set.
 
-    param: name -- name of the Logger
-    param: level -- log level
+    param: name -- str; name of the Logger
+    param: level -- int/str; log level
 
-    return: logging.Logger()
+    return: logging.Logger() -- new Logger object
     """
     logging.setLoggerClass(Logger)
     logger = logging.getLogger(name)
@@ -43,7 +43,7 @@ def set_level(level):
     Set level for all registered Logger and set global _level variable for
     new Loggers in the future.
 
-    param: level -- log level
+    param: level -- int/str; log level
     """
     global _level
     _level = level

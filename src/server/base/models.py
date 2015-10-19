@@ -22,4 +22,8 @@ class Server():
         return self._hostname
 
     def get_ip(self):
-        return socket.gethostbyname(self._hostname)
+        try:
+            ip = socket.gethostbyname(self._hostname)
+            return ip
+        except socket.gaierror:
+            return ''

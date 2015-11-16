@@ -3,9 +3,9 @@
 #
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
-from config import URL, PROTOCOL_VERSION
-from flask import Blueprint, render_template, redirect, g
-from server.base.models import Server
+from rfserver.config import URL, PROTOCOL_VERSION
+from rfserver.server.base.models import Server
+from flask import Blueprint, render_template, redirect, g, current_app
 
 module = Blueprint('base', __name__)
 
@@ -27,5 +27,4 @@ def redirect_serviceroot():
 @module.route(URL['SERVICEROOT'] + '/')
 def show_serviceroot():
     return render_template('base/serviceroot.json',
-            server=g.server.get_fqdn()
-    )
+            module=current_app.config['MODULE'])

@@ -4,17 +4,17 @@
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
 import sys
-if not sys.version_info[0] >= 3:
-    print("Python 3 required! Exit.")
-    sys.exit(1)
-import config
-import log
+from rfserver import log
+
+from rfserver import config
+from rfserver.server import app
+
 from importlib import import_module
 from flask import Flask
 import argparse
-from server import app
+import logging
 
-logger = log.get_logger()
+logger = logging.getLogger('main')
 
 def probe_modules():
     """
@@ -23,10 +23,10 @@ def probe_modules():
     return: [] -- list of str which can be imported via import_module()
     """
     # TODO: probe for installed modules
-    modules = ['modules.libvirt']
+    modules = ['rflibvirt']
     return modules
 
-def main(module, use_ssl=True):
+def start(module, use_ssl=True):
     """
     Main function.
 
@@ -47,6 +47,7 @@ def main(module, use_ssl=True):
         ))
         sys.exit(1)
 
+    app.config['MODULE'] = system.NAME
     app.register_blueprint(system.views.module)
     app.config.from_object(config)
     if app.config['SERVER']['DEBUG']:
@@ -64,7 +65,7 @@ def main(module, use_ssl=True):
             ssl_context=encryption
     )
 
-if __name__ == '__main__':
+def run():
     """
     Parse command line arguments and call main function.
     """
@@ -77,7 +78,7 @@ if __name__ == '__main__':
     parser.add_argument(
             'module',
             nargs='?',
-            default='modules.libvirt',
+            default='rflibvirt',
             help="Specify the backend module. If no module is\n\
 specified, the first one gets taken. Following\n\
 modules have been found:\n\n{}".format('\n'.join(probe_modules()))
@@ -118,6 +119,8 @@ modules have been found:\n\n{}".format('\n'.join(probe_modules()))
 
     # enable debug messages
     if args.debug:
-        log.set_level('DEBUG')
+        logger.set_global_level('DEBUG')
+    else:
+        logger.set_global_level(config.LOGGER['LEVEL'])
 
-    main(args.module, use_ssl=not args.no_ssl)
+    start(args.module, use_ssl=not args.no_ssl)

@@ -3,11 +3,11 @@
 #
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
+from rfserver.config import URL
+from rfserver.server.sessions.decorators import login_required
+import json
 from flask import Blueprint, jsonify, g, request, abort, url_for, redirect,\
         make_response, render_template
-from config import URL
-import json
-from server.sessions.decorators import login_required
 
 module = Blueprint('sessions', __name__)
 

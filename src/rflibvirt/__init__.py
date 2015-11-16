@@ -8,4 +8,4 @@ NAME = 'libvirt'
 import os
 TEMPLATES = os.path.dirname(__file__) + '/templates'
 
-from .views import module
+from rflibvirt.views import module

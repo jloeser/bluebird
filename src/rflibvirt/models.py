@@ -3,15 +3,15 @@
 #
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
+import logging
 import libvirt
-import log
-from . import NAME
+from rflibvirt import NAME
 
 LIBVIRT_URI = 'qemu:///system'
 ACTIVE = 0
 INACTIVE = 1
 
-logger = log.get_logger(NAME)
+logger = logging.getLogger(NAME)
 
 class Libvirt():
 
@@ -38,11 +38,11 @@ class Libvirt():
                 raise NoSystemFoundException
 
             self._domains = {}
-            logger.info("Running hypervisor: {0} {1}".format(
+            logger.info(" * Running hypervisor: {0} {1}".format(
                     self._conn.getType(),
                     self._get_version_str(self._conn.getVersion())
             ))
-            logger.debug("Library: {}".format(
+            logger.info(" * Library: {}".format(
                     self._get_version_str(self._conn.getLibVersion())
             ))
 
@@ -56,7 +56,7 @@ class Libvirt():
 
     def _probe(self):
         self._collect_domains()
-        logger.debug("Definded domains: {}".format(len(self._domains)))
+        logger.info(" * Definded domains: {}".format(len(self._domains)))
 
 
     def _get_version_str(self, version):

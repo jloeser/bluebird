@@ -3,11 +3,11 @@
 #
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
-from config import URL
+from rfserver.config import URL
 from flask import Blueprint, jsonify, g, render_template, abort
-from server.base.models import Server
-from .models import Libvirt
-from . import TEMPLATES
+from rfserver.server.base.models import Server
+from rflibvirt.models import Libvirt
+from rflibvirt import TEMPLATES
 
 module = Blueprint('system', __name__, url_prefix=URL['SERVICEROOT'],
         template_folder=TEMPLATES)
@@ -18,7 +18,10 @@ def set_libvirt_object():
 
 @module.route('/Systems')
 def list_domains():
-    return render_template('systems.json', libvirt=g.libvirt)
+    return render_template('systems.json',
+            libvirt=g.libvirt,
+            total=len(g.libvirt.domains)
+    )
 
 @module.route('/Systems/<domain>', methods=['GET', 'POST'])
 def show_domains(domain):

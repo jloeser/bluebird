@@ -3,14 +3,14 @@
 #
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
-import log
+import logging
 import base64
 from hashlib import md5
 from time import time
 from datetime import datetime, timedelta
-from config import USER, PASS
+from rfserver.config import USER, PASS
 
-logger = log.get_logger('session')
+logger = logging.getLogger('session')
 
 class Session():
 
@@ -29,7 +29,7 @@ class Session():
 
     def __init__(self):
         if not Session._initialized:
-            logger.debug("Initialized.")
+            logger.debug(" * Sessions initialized.")
             Session._initialized = True
 
     def check_xauth(self, xauth):

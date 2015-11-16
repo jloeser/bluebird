@@ -5,7 +5,7 @@
 # Published under the GNU Public Licence 2
 from functools import wraps
 from flask import g, flash, redirect, url_for, request, abort
-from server.sessions.models import Session
+from rfserver.server.sessions.models import Session
 
 def login_required(f):
     @wraps(f)

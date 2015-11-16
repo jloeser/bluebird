@@ -8,7 +8,7 @@ import sys
 
 from flask import Flask, request, abort, g
 
-from server.sessions.models import Session
+from rfserver.server.sessions.models import Session
 
 app = Flask(__name__)
 
@@ -32,8 +32,8 @@ def set_content_type(response):
     response.headers['Content-Type'] = 'application/json'
     return response
 
-from server.base.views import module as baseModule
+from rfserver.server.base.views import module as baseModule
 app.register_blueprint(baseModule)
 
-from server.sessions.views import module as sessionModule
+from rfserver.server.sessions.views import module as sessionModule
 app.register_blueprint(sessionModule)

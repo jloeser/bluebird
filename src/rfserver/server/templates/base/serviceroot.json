@@ -1,0 +1,24 @@
+{
+  "Name": "SUSE virtual Redfish Server [{{ module }}]",
+  "Oem": {
+    "SUSE": {
+      "LoginHint": {
+        "Hint": "POST to /Sessions to login using the following JSON object:",
+        "HintPOSTData": {
+          "UserName": "username",
+          "Password": "password"
+        }
+      }
+    },
+    "Title": "ServiceRoot.1.0.0.ServiceRoot",
+    "Schema": "http://redfish.dmtf.org/schemas/v1/ServiceRoot.1.0.0.json"
+  },
+  "Links": {
+    "Sessions": {
+      "href": "/rest/v1/Sessions"
+    }
+  },
+  "Systems": {
+    "href": "/rest/v1/Systems"
+  }
+}

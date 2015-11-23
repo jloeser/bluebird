@@ -42,10 +42,9 @@ class Session():
     def check_xauth(self, xauth):
         for id, data in self._sessions.items():
             if data['X-AUTH'] == xauth:
-                current = datetime.fromtimestamp(time())
+                current = datetime.now()
                 timestamp = datetime.fromtimestamp(data['TIME'])
-                time_diff = current - timestamp
-                if time_diff.min < timedelta(minutes=self._session_timeout_min):
+                if (current - timestamp) < timedelta(minutes=self._session_timeout_min):
                     logger.debug("'{}' is valid.".format(xauth))
                     data['TIME'] = time()
                     data['USERNAME'] = data['USERNAME']
@@ -71,11 +70,11 @@ class Session():
     def create(self, username, password):
         if username == USER and password == PASS and self._id < 10:
             id = md5(str.encode(str(self._id)))
-            id = username + id.hexdigest()
-            timestamp = time()
+            id = id.hexdigest()
+            current = time()
             xauth = md5()
             # TODO: use server key
-            xauth.update(str.encode(str(timestamp)))
+            xauth.update(str.encode(str(current)))
             xauth = xauth.hexdigest()
             result = {
                     'ID': id,
@@ -85,7 +84,7 @@ class Session():
             self._sessions[id] = {
                     'USERNAME': USER,
                     'X-AUTH': xauth,
-                    'TIME': timestamp
+                    'TIME': current
             }
             self._id += 1
             return result

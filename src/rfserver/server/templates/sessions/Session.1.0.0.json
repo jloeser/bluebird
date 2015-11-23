@@ -1,0 +1,9 @@
+{
+    "@odata.context": "/redfish/v1/$metadata#SessionService/Sessions/$entity",
+    "@odata.id": "/redfish/v1/SessionService/Sessions/1",
+    "@odata.type": "#Session.1.0.0.Session",
+    "Id": "{{ id }}",
+    "Name": "User Session",
+    "Description": "User Session",
+    "UserName": "{{ username }}"
+}

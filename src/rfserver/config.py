@@ -5,6 +5,7 @@
 # Published under the GNU Public Licence 2
 PROGRAM_NAME = 'redfish-server'
 PROGRAM_NAME_SHORT = 'rfserver'
+PROGRAM_VERSION = '0.1'
 
 LOGGER = {
         'NAME': PROGRAM_NAME_SHORT,
@@ -19,19 +20,19 @@ SERVER = {
         'DEBUG': True
 }
 
-MAJOR_VERSION = 0
-MINOR_VERSION = 1
-PROTOCOL_VERSION = 1
+MAJOR_VERSION = 1
+MINOR_VERSION = 0
+ERRATA = 0
 
-PROGRAM_VERSION = "{}.{}".format(MAJOR_VERSION, MINOR_VERSION)
-VERSION_STR = "v" + str(PROTOCOL_VERSION)
+REDFISH_VERSION_MAJOR = 'v' + str(MAJOR_VERSION)
+REDFISH_VERSION = '{}.{}.{}'.format(MAJOR_VERSION, MINOR_VERSION, ERRATA)
 
 USER = 'root'
 PASS = 'test'
 
 URL = {
-        'ROOT': '/rest',
-        'SERVICEROOT': '/rest/v{}'.format(PROTOCOL_VERSION),
-        'SESSIONS': '/rest/v{}/Sessions'.format(PROTOCOL_VERSION),
-        'SYSTEMS': '/rest/v{}/Systems'.format(PROTOCOL_VERSION)
+        'ROOT': '/redfish',
+        'SERVICEROOT': '/redfish/v{}'.format(MAJOR_VERSION),
+        'SESSIONS': '/redfish/v{}/SessionService'.format(MAJOR_VERSION),
+        'SYSTEMS': '/redfish/v{}/Systems'.format(MAJOR_VERSION)
 }

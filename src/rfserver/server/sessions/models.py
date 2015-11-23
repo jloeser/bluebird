@@ -16,7 +16,8 @@ class Session():
 
     _instance = None
     _initialized = False
-    _session_timeout_min = 10
+    # according to SessionService.1.0.0, timeout mus be between 30 and 86400
+    _session_timeout_min = 30
     _sessions = {}
     _id = 0
 
@@ -32,6 +33,12 @@ class Session():
             logger.debug(" * Sessions initialized.")
             Session._initialized = True
 
+    def get_timeout():
+        return Session._session_timeout_min
+
+    def get_sessions():
+        return Session._sessions.keys()
+
     def check_xauth(self, xauth):
         for id, data in self._sessions.items():
             if data['X-AUTH'] == xauth:
@@ -41,6 +48,7 @@ class Session():
                 if time_diff.min < timedelta(minutes=self._session_timeout_min):
                     logger.debug("'{}' is valid.".format(xauth))
                     data['TIME'] = time()
+                    data['USERNAME'] = data['USERNAME']
                     data['ID'] = id
                     return data
                 else:

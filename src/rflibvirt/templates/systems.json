@@ -3,7 +3,7 @@
   "Members": [
     {% for domain in libvirt.get_domains() %}
       {
-        "href": "/rest/v1/Systems/{{ domain.name() }}"
+        "href": "/redfish/v1/Systems/{{ domain.name() }}"
       }
     {% if not loop.last %},{% endif %}
     {% endfor %}

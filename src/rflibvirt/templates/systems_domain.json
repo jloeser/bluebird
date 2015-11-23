@@ -10,7 +10,7 @@
   },
   "links": {
     "self": {
-      "href": "/rest/v1/Systems/{{ domain.name() }}"
+      "href": "/redfish/v1/Systems/{{ domain.name() }}"
     }
   },
   "Name": "Computer System",

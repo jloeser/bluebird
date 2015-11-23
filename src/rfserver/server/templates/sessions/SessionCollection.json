@@ -1,0 +1,16 @@
+{
+    "@Redfish.Copyright": "Copyright © 2014-2015 Distributed Management Task Force, Inc. (DMTF). All rights reserved.",
+    "@odata.context": "/redfish/v1/$metadata#SessionService/Sessions/$entity",
+    "@odata.type": "#SessionCollection.SessionCollection",
+    "Name": "Session Collection",
+    "Members@odata.count": {{ sessions|length }},
+    "Members": [
+    {% for session in sessions %}
+        {
+            "@odata.id": "/redfish/v1/SessionService/Sessions/{{ session }}",
+            "href": "/redfish/v1/SessionService/Sessions/{{ session }}"
+        }
+    {% if not loop.last %},{% endif %}
+    {% endfor %}
+    ]
+}

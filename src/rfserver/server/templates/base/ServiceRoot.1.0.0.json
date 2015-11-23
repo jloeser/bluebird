@@ -1,0 +1,39 @@
+{
+    "@Redfish.Copyright": "Copyright © 2014-2015 Distributed Management Task Force, Inc. (DMTF). All rights reserved.",
+    "@odata.context": "/redfish/v1/$metadata#ServiceRoot",
+    "@odata.id": "/redfish/v1/",
+    "@odata.type": "#ServiceRoot.1.0.0.ServiceRoot",
+    "Id": "RootService",
+    "Name": "Root Service",
+    "RedfishVersion": "{{ redfish_version }}",
+    "UUID": "92384634-2938-2342-8820-489239905423",
+    "Oem": {
+        "SUSE": {
+            "LoginHint": {
+                "Hint": "POST to /SessionService/Sessions to login using the following JSON object:",
+                "HintPOSTData": {
+                    "UserName": "username",
+                    "Password": "password"
+                }
+            }
+        }
+    },
+    "Systems": {
+        "@odata.id": "/redfish/v1/Systems",
+        "href": "/redfish/v1/Systems"
+    } ,
+    "Chassis": {
+        "@odata.id": "/redfish/v1/Chassis",
+        "href": "/redfish/v1/Chassis"
+        } ,
+    "SessionService": {
+        "@odata.id": "/redfish/v1/SessionService",
+        "href": "/redfish/v1/SessionService"
+    } ,
+    "Links": {
+        "Sessions": {
+            "@odata.id": "/redfish/v1/SessionService/Sessions",
+            "href": "/redfish/v1/SessionService/Sessions"
+        }
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "@Redfish.Copyright": "Copyright © 2014-2015 Distributed Management Task Force, Inc. (DMTF). All rights reserved.",
+    "@odata.context": "/redfish/v1/$metadata#SessionService",
+    "@odata.id": "/redfish/v1/SessionService",
+    "@odata.type": "#SessionService.1.0.0.SessionService",
+    "Id": "SessionService",
+    "Name": "Session Service",
+    "Description": "Session Service",
+    "Status": {
+        "State": "{{ state }}",
+        "Health": "{{ health }}"
+    } ,
+    "ServiceEnabled": true,
+    "SessionTimeout": {{ session_timeout }},
+    "Sessions": {
+        "@odata.id": "/redfish/v1/SessionService/Sessions",
+        "href": "/redfish/v1/SessionService/Sessions"
+    }
+}

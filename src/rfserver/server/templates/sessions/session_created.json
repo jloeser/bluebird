@@ -1,6 +1,0 @@
-{
-    "Id": "{{id}}",
-    "Name": "User Session",
-    "Description": "User Session",
-    "UserName": "{{username}}"
-}

@@ -3,7 +3,7 @@
 #
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
-from rfserver.config import URL, PROTOCOL_VERSION
+from rfserver.config import URL, REDFISH_VERSION, REDFISH_VERSION_MAJOR
 from rfserver.server.base.models import Server
 from flask import Blueprint, render_template, redirect, g, current_app
 
@@ -15,8 +15,8 @@ def set_server_object():
 
 @module.route(URL['ROOT'])
 def show_version():
-    return render_template('base/version.json',
-        version='v{}'.format(PROTOCOL_VERSION),
+    return render_template('base/Version.json',
+        version=REDFISH_VERSION_MAJOR,
         url=URL['SERVICEROOT']
      )
 
@@ -26,5 +26,6 @@ def redirect_serviceroot():
 
 @module.route(URL['SERVICEROOT'] + '/')
 def show_serviceroot():
-    return render_template('base/serviceroot.json',
-            module=current_app.config['MODULE'])
+    return render_template('base/ServiceRoot.1.0.0.json',
+            redfish_version=REDFISH_VERSION
+    )

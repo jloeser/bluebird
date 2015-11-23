@@ -10,6 +10,14 @@ from rfserver.server.sessions.models import Session
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
+        """
+        Check authentication.
+
+        Allowed authentication methods:
+
+        - X-Auth-Token Header
+        - Basic Authentication Schema (RFC 2617, Section 2)
+        """
         g.xauth = request.headers.get('X-Auth-Token')
         if g.xauth:
             result = g.session.check_xauth(g.xauth)

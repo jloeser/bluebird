@@ -1,0 +1,17 @@
+{
+    "@Redfish.Copyright": "Copyright © 2014-2015 Distributed Management Task Force, Inc. (DMTF). All rights reserved.",
+    "@odata.context": "/redfish/v1/$metadata#Systems",
+    "@odata.id": "/redfish/v1/Systems",
+    "@odata.type": "#ComputerSystemCollection.ComputerSystemCollection",
+    "Name": "Computer System Collection",
+    "Members@odata.count": {{ libvirt.get_domains()|length }},
+    "Members": [
+    {% for domain in libvirt.get_domains() %}
+        {
+            "@odata.id" : "/redfish/v1/Systems/{{ domain.name() }}",
+            "href": "/redfish/v1/Systems/{{ domain.name() }}"
+        }
+    {% if not loop.last %},{% endif %}
+    {% endfor %}
+    ]
+}

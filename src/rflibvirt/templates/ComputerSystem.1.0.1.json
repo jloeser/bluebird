@@ -1,0 +1,40 @@
+{
+    "@Redfish.Copyright": "Copyright © 2014-2015 Distributed Management Task Force, Inc. (DMTF). All rights reserved.",
+    "@odata.context": "/redfish/v1/$metadata#Systems/Members/$entity",
+    "@odata.id": "/redfish/v1/Systems/{{ domain.name() }}",
+    "@odata.type": "#ComputerSystem.1.0.1.ComputerSystem",
+    "Id": "{{ domain.get_id() }}",
+    "Name": "{{ domain.name() }}",
+    "SystemType": "Virtual",
+    "Description": "Virtual machine",
+    "UUID": "{{ domain.UUIDString() }}",
+    "HostName": "{{ server.get_fqdn() }}",
+    "PowerState": "{{ domain.get_power_state() }}",
+    "MemorySummary": {
+        "TotalSystemMemoryGiB": {{ domain.get_total_memory() }}
+    } ,
+    "Oem": {
+        "ExactPowerState": "{{ domain.get_exact_power_state() }}",
+        "MaxMemoryMiB": {{ domain.get_max_memory() }},
+        "UsedMemoryMiB": {{ domain.get_used_memory() }},
+        "VirtualCPUs": {{ domain.get_number_virtual_cpus() }},
+        "OSType": "{{ domain.get_ostype() }}",
+        "ReservedBy": ""
+    },
+    "Links": {
+        "Chassis": [
+            {
+                "@odata.id": "/redfish/v1/Chassis/1U"
+            }
+        ]
+    } ,
+    "Actions": {
+        "#ComputerSystem.Reset": {
+            "target": "/redfish/v1/Systems/{{ domain.name() }}/Actions/ComputerSystem.Reset",
+            "ResetType@DMTF.AllowableValues": [
+                "On",
+                "ForceOff"
+            ]
+        }
+    }
+}

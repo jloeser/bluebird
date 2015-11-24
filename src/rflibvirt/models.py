@@ -11,7 +11,73 @@ LIBVIRT_URI = 'qemu:///system'
 ACTIVE = 0
 INACTIVE = 1
 
+RESET = {
+        'On': 'start',
+        'ForceOff': 'destroy'
+}
+
+DOMAIN_STATES = {
+        libvirt.VIR_DOMAIN_RUNNING  : "running",
+        libvirt.VIR_DOMAIN_BLOCKED  : "idle",
+        libvirt.VIR_DOMAIN_PAUSED   : "paused",
+        libvirt.VIR_DOMAIN_SHUTDOWN : "in shutdown",
+        libvirt.VIR_DOMAIN_SHUTOFF  : "shut off",
+        libvirt.VIR_DOMAIN_CRASHED  : "crashed",
+        libvirt.VIR_DOMAIN_NOSTATE  : "no state"
+}
+
 logger = logging.getLogger(NAME)
+
+class Domain(libvirt.virDomain):
+
+    def __init__(self, domain):
+        libvirt.virDomain.__init__(self, domain, domain._o)
+
+    def get_id(self):
+        dom_id = self.ID()
+        if dom_id == -1:
+            return "N/A"
+        else:
+            return dom_id
+
+    def get_power_state(self):
+        if self.isActive():
+            return "On"
+        else:
+            return "Off"
+
+    def get_exact_power_state(self):
+        state = self.info()[0]
+        return DOMAIN_STATES[state]
+
+    def get_number_virtual_cpus(self):
+        return self.info()[3]
+
+    def get_total_memory(self):
+        return self.info()[1] / (1024*1024)
+
+    def get_max_memory(self):
+        return self.info()[1] / 1024
+
+    def get_used_memory(self):
+        return self.info()[2] / 1024
+
+    def get_ostype(self):
+        return self.OSType()
+
+    def start(self):
+        try:
+            self.create()
+        except libvirt.libvirtError as error:
+            logger.error(error)
+
+    def destroy(self):
+        try:
+            libvirt.virDomain.destroy(self)
+        except libvirt.libvirtError as error:
+            logger.error(error)
+
+
 
 class Libvirt():
 
@@ -52,7 +118,7 @@ class Libvirt():
     def _collect_domains(self):
         if self._conn.listAllDomains():
             for domain in self._conn.listAllDomains():
-                self._domains[domain.UUIDString()] = domain
+                self._domains[domain.UUIDString()] = Domain(domain)
 
     def _probe(self):
         self._collect_domains()
@@ -73,8 +139,7 @@ class Libvirt():
         return self._domains
 
     def get_domains(self):
-        for uuid, domain in self._domains.items():
-            yield domain
+        return self._domains.values()
 
     def get_domain(self, name):
         for uuid, domain in self._domains.items():

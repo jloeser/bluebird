@@ -24,7 +24,7 @@ def check_content_type():
         if content_type == 'application/json':
             return
         else:
-            abort(500)
+            return ("Server only accepts application/json", 500)
 
 # ...and we do only send JSON
 @app.after_request

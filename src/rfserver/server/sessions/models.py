@@ -8,7 +8,6 @@ import base64
 from hashlib import md5
 from time import time
 from datetime import datetime, timedelta
-from rfserver.config import USER, PASS
 from rfserver.server.authentication.user import User
 
 logger = logging.getLogger('session')
@@ -79,11 +78,11 @@ class Session():
             xauth = xauth.hexdigest()
             result = {
                     'ID': id,
-                    'USERNAME': USER,
+                    'USERNAME': username,
                     'X-AUTH': xauth,
             }
             self._sessions[id] = {
-                    'USERNAME': USER,
+                    'USERNAME': username,
                     'X-AUTH': xauth,
                     'TIME': current
             }

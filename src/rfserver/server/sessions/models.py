@@ -9,6 +9,7 @@ from hashlib import md5
 from time import time
 from datetime import datetime, timedelta
 from rfserver.config import USER, PASS
+from rfserver.server.authentication.user import User
 
 logger = logging.getLogger('session')
 
@@ -63,12 +64,12 @@ class Session():
         if prefix == 'Basic':
             credential = base64.b64decode(credential).decode('utf-8')
             username, password = credential.split(':')
-            if username == USER and password == PASS:
+            if User.is_authenticated(username, password):
                 return True
         return False
 
     def create(self, username, password):
-        if username == USER and password == PASS and self._id < 10:
+        if User.is_authenticated(username, password) and self._id < 10:
             id = md5(str.encode(str(self._id)))
             id = id.hexdigest()
             current = time()

@@ -6,6 +6,7 @@
 from rfserver.config import URL
 from flask import Blueprint, jsonify, g, render_template, abort, request
 from rfserver.server.base.models import Server
+from rfserver.server.sessions.decorators import xauth_required
 from rflibvirt.models import Libvirt, RESET
 from rflibvirt import TEMPLATES
 import json
@@ -16,6 +17,8 @@ module = Blueprint('system', __name__, url_prefix=URL['SERVICEROOT'],
 @module.before_request
 def set_libvirt_object():
     g.libvirt = Libvirt()
+    # probe for domains which may have changed
+    g.libvirt.probe()
 
 @module.route('/Systems', methods=['GET'])
 def list_domains():
@@ -36,6 +39,7 @@ def show_domains(domain):
 
 @module.route('/Systems/<domain>/Actions/ComputerSystem.Reset',
         methods=['POST'])
+@xauth_required
 def reset(domain):
     dom = g.libvirt.get_domain(domain)
     if dom:
@@ -46,10 +50,11 @@ def reset(domain):
             abort(500)
 
         if 'ResetType' in data.keys():
+            username = g.login['USERNAME']
             action = data['ResetType']
             if action in RESET.keys():
                 method = getattr(dom, RESET[action])
-                method()
+                method(username)
                 pass
             return ("", 200)
         else:

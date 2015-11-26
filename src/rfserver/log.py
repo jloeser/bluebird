@@ -10,6 +10,18 @@ from rfserver import config
 if __name__ == '__main__':
     print("Error: module must be imported")
     sys.exit(1)
+# https://svn.blender.org/svnroot/bf-blender/trunk/blender/build_files/scons/tools/bcolors.py
+class esc:
+    HEADER = '\033[95m'
+    BLUE = '\033[94m'
+    GREEN = '\033[92m'
+    WARNING = '\033[93m'
+    PURPLE = '\033[35m'
+    CYAN = '\033[36m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 class Logger(logging.Logger):
 
@@ -20,9 +32,15 @@ class Logger(logging.Logger):
         self._logger.append(self)
         logging.Logger.__init__(self, name, logging.DEBUG)
 
+        logging.addLevelName(logging.DEBUG, 'DD')
+        logging.addLevelName(logging.INFO, esc.BOLD + 'II' + esc.ENDC)
+        logging.addLevelName(logging.WARNING, esc.WARNING + 'WW' + esc.ENDC)
+        logging.addLevelName(logging.ERROR, esc.FAIL + esc.BOLD + 'EE' + esc.ENDC)
+
         # console output
         console = logging.StreamHandler(sys.stdout)
-        formatter = logging.Formatter('%(asctime)s[%(name)s] >> %(message)s')
+        formatter = logging.Formatter('{asctime} {levelname} [{name:<8}] >> {message}',
+                "%Y-%m-%d %H:%M:%S", style='{')
         console.setFormatter(formatter)
         self.addHandler(console)
 

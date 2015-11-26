@@ -6,6 +6,7 @@
 import logging
 import libvirt
 from rflibvirt import NAME
+from rfserver.server.authentication.system import System
 
 LIBVIRT_URI = 'qemu:///system'
 ACTIVE = 0
@@ -26,17 +27,23 @@ DOMAIN_STATES = {
         libvirt.VIR_DOMAIN_NOSTATE  : "no state"
 }
 
+NOT_AVAILABLE = "N/A"
+
 logger = logging.getLogger(NAME)
 
 class Domain(libvirt.virDomain):
 
-    def __init__(self, domain):
+    def __init__(self, domain, owner):
         libvirt.virDomain.__init__(self, domain, domain._o)
+        self._owner = owner
+
+    def __del__(self):
+        pass
 
     def get_id(self):
         dom_id = self.ID()
         if dom_id == -1:
-            return "N/A"
+            return NOT_AVAILABLE
         else:
             return dom_id
 
@@ -65,17 +72,39 @@ class Domain(libvirt.virDomain):
     def get_ostype(self):
         return self.OSType()
 
-    def start(self):
-        try:
-            self.create()
-        except libvirt.libvirtError as error:
-            logger.error(error)
+    def get_owner(self):
+        if self._owner:
+            return self._owner
+        else:
+            return NOT_AVAILABLE
 
-    def destroy(self):
-        try:
-            libvirt.virDomain.destroy(self)
-        except libvirt.libvirtError as error:
-            logger.error(error)
+    def set_owner(self, username):
+        self._owner = username
+
+    def start(self, username):
+        if username == self.get_owner():
+            try:
+                self.create()
+                return True
+            except libvirt.libvirtError as error:
+                logger.error(error)
+                return False
+        else:
+            logger.error("Permission denied (start by '{}')".format(username))
+            return False
+
+
+    def destroy(self, username):
+        if username == self.get_owner():
+            try:
+                libvirt.virDomain.destroy(self)
+                return True
+            except libvirt.libvirtError as error:
+                logger.error(error)
+                return False
+        else:
+            logger.error("Permission denied (destroy by '{}')".format(username))
+            return False
 
 
 
@@ -112,15 +141,16 @@ class Libvirt():
                     self._get_version_str(self._conn.getLibVersion())
             ))
 
-            self._probe()
             Libvirt._initialized = True
 
     def _collect_domains(self):
+        self._domains = {}
         if self._conn.listAllDomains():
             for domain in self._conn.listAllDomains():
-                self._domains[domain.UUIDString()] = Domain(domain)
+                owner = System.get_owner(domain.name())
+                self._domains[domain.UUIDString()] = Domain(domain, owner)
 
-    def _probe(self):
+    def probe(self):
         self._collect_domains()
         logger.info(" * Definded domains: {}".format(len(self._domains)))
 

@@ -19,7 +19,7 @@
         "UsedMemoryMiB": {{ domain.get_used_memory() }},
         "VirtualCPUs": {{ domain.get_number_virtual_cpus() }},
         "OSType": "{{ domain.get_ostype() }}",
-        "ReservedBy": ""
+        "ReservedBy": "{{ domain.get_owner() }}"
     },
     "Links": {
         "Chassis": [

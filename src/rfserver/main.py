@@ -38,7 +38,7 @@ def start(module, use_ssl=True):
     """
     try:
         system = import_module(module)
-        logger.debug("Module '{}' found.".format(
+        logger.debug(" * Module '{}' found.".format(
                 system.NAME
         ))
     except ImportError:

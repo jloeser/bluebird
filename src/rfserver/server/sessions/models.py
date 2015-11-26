@@ -19,6 +19,7 @@ class Session():
     # according to SessionService.1.0.0, timeout mus be between 30 and 86400
     _session_timeout_min = 30
     _sessions = {}
+    _limit = 10
     _id = 0
 
     def __new__(cls, *args, **kwargs):
@@ -68,28 +69,39 @@ class Session():
         return False
 
     def create(self, username, password):
-        if User.is_authenticated(username, password) and self._id < 10:
-            id = md5(str.encode(str(self._id)))
-            id = id.hexdigest()
-            current = time()
-            xauth = md5()
-            # TODO: use server key
-            xauth.update(str.encode(str(current)))
-            xauth = xauth.hexdigest()
-            result = {
-                    'ID': id,
-                    'USERNAME': username,
-                    'X-AUTH': xauth,
-            }
-            self._sessions[id] = {
-                    'USERNAME': username,
-                    'X-AUTH': xauth,
-                    'TIME': current
-            }
-            self._id += 1
-            return result
-        else:
-            return False
+        # check if a session is active for username and return same session
+        for id, session in self._sessions.items():
+            if session['USERNAME'] == username:
+                logger.debug('Session already exists!')
+                return {
+                        'ID': id,
+                        'X-AUTH': session['X-AUTH'],
+                        'USERNAME': session['USERNAME']
+                }
+
+        if User.is_authenticated(username, password):
+            # create new session if limit isn't reached
+            if self._id < self._limit:
+                id = md5(str.encode(str(self._id)))
+                id = id.hexdigest()
+                current = time()
+                xauth = md5()
+                # TODO: use server key
+                xauth.update(str.encode(str(current)))
+                xauth = xauth.hexdigest()
+                result = {
+                        'ID': id,
+                        'USERNAME': username,
+                        'X-AUTH': xauth,
+                }
+                self._sessions[id] = {
+                        'USERNAME': username,
+                        'X-AUTH': xauth,
+                        'TIME': current
+                }
+                self._id += 1
+                return result
+        return False
 
     def delete(self, id):
         if id in self._sessions.keys():

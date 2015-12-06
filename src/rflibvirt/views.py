@@ -9,6 +9,7 @@ from rfserver.server.base.models import Server
 from rfserver.server.sessions.decorators import xauth_required
 from rflibvirt.models import Libvirt, RESET
 from rflibvirt import TEMPLATES
+from rfserver.server.decorators import collection
 import json
 
 module = Blueprint('system', __name__, url_prefix=URL['SERVICEROOT'],
@@ -21,6 +22,7 @@ def set_libvirt_object():
     g.libvirt.probe()
 
 @module.route('/Systems', methods=['GET'])
+@collection.odata_query_parameters_not_implemented
 def list_domains():
     return render_template('ComputerSystemCollection.json',
             libvirt=g.libvirt

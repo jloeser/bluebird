@@ -10,6 +10,7 @@ from rfserver.server.sessions.models import Session
 import json
 from flask import Blueprint, jsonify, g, request, abort, url_for, redirect,\
         make_response, render_template
+from rfserver.server.decorators import collection
 
 module = Blueprint('sessions', __name__)
 
@@ -38,6 +39,7 @@ def create_session():
 
 @module.route(URL['SESSIONS'] + '/Sessions', methods=['GET'])
 @login_required
+@collection.odata_query_parameters_not_implemented
 def show_session_collection():
     return render_template('sessions/SessionCollection.json',
             sessions=Session.get_sessions()

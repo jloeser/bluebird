@@ -4,7 +4,7 @@
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
 from functools import wraps
-from flask import g, flash, redirect, url_for, request, abort
+from flask import g, redirect, url_for, request, abort
 from rfserver.server.sessions.models import Session
 
 def login_required(f):

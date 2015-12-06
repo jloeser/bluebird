@@ -5,8 +5,7 @@
 # Published under the GNU Public Licence 2
 from rfserver.config import URL, REDFISH_VERSION, REDFISH_VERSION_MAJOR
 from rfserver.server.base.models import Server
-from flask import Blueprint, render_template, redirect, g, current_app,\
-        url_for
+from flask import Blueprint, render_template, redirect, g, current_app
 from rfserver.server.sessions.decorators import login_required
 
 module = Blueprint('base', __name__)
@@ -35,6 +34,11 @@ def show_serviceroot():
 @module.route(URL['SERVICEROOT'] + '/odata', methods=['GET'])
 def show_odata_service_document():
     return current_app.send_static_file('odata')
+
+@module.route(URL['SERVICEROOT'] + '/$metadata', methods=['GET'])
+def show_redfish_metadata_document():
+    g.metadata = True
+    return current_app.send_static_file('$metadata')
 
 @module.route(URL['SERVICEROOT'] + '/Registries', methods=['GET'])
 @login_required

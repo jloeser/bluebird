@@ -9,6 +9,7 @@ import sys
 from flask import Flask, request, abort, g
 
 from rfserver.server.sessions.models import Session
+import json
 
 app = Flask(__name__,
         template_folder='{}/templates'.format(
@@ -19,22 +20,29 @@ app = Flask(__name__,
 
 @app.before_request
 def set_session_object():
+    """Set session object for current request"""
     g.session = Session()
 
-# only accept JSON on POST data
 @app.before_request
 def check_content_type():
+    """Check if incoming POST request is JSON"""
     if request.method == 'POST':
         content_type = request.headers.get('Content-Type')
         if content_type == 'application/json':
             return
         else:
-            return ("Server only accepts application/json", 500)
+            message = {"Message": "Server only accepts application/json"}
+            return (json.dumps(message), 500)
 
-# ...and we do only send JSON
 @app.after_request
 def set_content_type(response):
-    response.headers['Content-Type'] = 'application/json'
+    """Always ship JSON, except for the metadata document"""
+    if hasattr(g, 'metadata'):
+        content = 'application/xml'
+    else:
+        content = 'application/json'
+
+    response.headers['Content-Type'] = content
     return response
 
 from rfserver.server.base.views import module as baseModule

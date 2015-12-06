@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2014-2015 Distributed Management Task Force, Inc. (DMTF). All rights reserved.-->
+<edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
+    <edmx:Reference Uri="http://redfish.dmtf.org/schemas/v1/ServiceRoot.xml">
+        <edmx:Include Namespace="ServiceRoot" />
+        <edmx:Include Namespace="ServiceRoot.1.0.0"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="http://redfish.dmtf.org/schemas/v1/Chassis.xml">
+        <edmx:Include Namespace="Chassis" />
+        <edmx:Include Namespace="Chassis.1.0.0"/>
+    </edmx:Reference>
+    <edmx:reference uri="http://redfish.dmtf.org/schemas/v1/ChassisCollection.xml">
+        <edmx:include Namespace="ChassisCollection" />
+    </edmx:reference>
+    <edmx:Reference Uri="http://redfish.dmtf.org/schemas/v1/ComputerSystem.xml">
+        <edmx:Include Namespace="ComputerSystem" />
+        <edmx:Include Namespace="ComputerSystem.1.0.0"/>
+    </edmx:Reference>
+    <edmx:reference uri="http://redfish.dmtf.org/schemas/v1/ComputerSystemCollection.xml">
+        <edmx:include Namespace="ComputerSystemCollection" />
+    </edmx:reference>
+    <edmx:Reference Uri="http://redfish.dmtf.org/schemas/v1/JsonSchemaFile.xml">
+        <edmx:include Namespace="JsonSchemaFile" />
+        <edmx:Include Namespace="JsonSchemaFile.1.0.0"/>
+    </edmx:Reference>
+    <edmx:reference uri="http://redfish.dmtf.org/schemas/v1/JsonSchemaFileCollection.xml">
+        <edmx:include Namespace="JsonSchemaFileCollection" />
+    </edmx:reference>
+    <edmx:Reference Uri="http://redfish.dmtf.org/schemas/v1/Message.xml">
+        <edmx:include Namespace="Message" />
+        <edmx:Include Namespace="Message.1.0.0"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="http://redfish.dmtf.org/schemas/v1/Processor.xml">
+        <edmx:include Namespace="Processor" />
+        <edmx:Include Namespace="Processor.1.0.0"/>
+    </edmx:Reference>
+    <edmx:reference uri="http://redfish.dmtf.org/schemas/v1/ProcessorCollection.xml">
+        <edmx:include Namespace="ProcessorCollection" />
+    </edmx:reference>
+    <edmx:Reference Uri="http://redfish.dmtf.org/schemas/v1/Session.xml">
+        <edmx:include Namespace="Session" />
+        <edmx:Include Namespace="Session.1.0.0"/>
+    </edmx:Reference>
+    <edmx:reference uri="http://redfish.dmtf.org/schemas/v1/SessionCollection.xml">
+        <edmx:include Namespace="SessionCollection" />
+    </edmx:reference>
+    <edmx:Reference Uri="http://redfish.dmtf.org/schemas/v1/SessionService.xml">
+        <edmx:include Namespace="SessionService" />
+        <edmx:Include Namespace="SessionService.1.0.0"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="http://redfish.dmtf.org/schemas/v1/RedfishExtensions.xml">
+        <edmx:Include Namespace="RedfishExtensions.1.0.0" Alias="RedfishExtensions"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="Service">
+            <EntityContainer Name="Service" Extends="ServiceRoot.1.0.0.ServiceContainer"/>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
+

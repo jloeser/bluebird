@@ -55,7 +55,7 @@ def basic_authentication():
     if g.basic_auth:
         result = g.session.check_basic_auth(g.basic_auth)
         if result:
-            g.login = None
+            g.login = result
             return True
     else:
         return False

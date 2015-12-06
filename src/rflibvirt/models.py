@@ -12,7 +12,7 @@ LIBVIRT_URI = 'qemu:///system'
 ACTIVE = 0
 INACTIVE = 1
 
-RESET = {
+ACTIONS = {
         'On': 'start',
         'ForceOff': 'destroy'
 }
@@ -90,7 +90,9 @@ class Domain(libvirt.virDomain):
                 logger.error(error)
                 return False
         else:
-            logger.error("Permission denied (start by '{}')".format(username))
+            logger.error("Permission denied for user '{}' ('{}').".format(
+                    username, self.name())
+            )
             return False
 
 
@@ -103,7 +105,9 @@ class Domain(libvirt.virDomain):
                 logger.error(error)
                 return False
         else:
-            logger.error("Permission denied (destroy by '{}')".format(username))
+            logger.error("Permission denied for user '{}' ('{}').".format(
+                    username, self.name())
+            )
             return False
 
 
@@ -177,14 +181,8 @@ class Libvirt():
                 return domain
         return None
 
-    def start(self, uuid):
-        pass
+    def valid_action(self, action):
+        if action in ACTIONS.keys():
+            return ACTIONS[action]
+        return None
 
-    def reboot(self, uuid):
-        pass
-
-    def shutdown(self, uuid):
-        pass
-
-    def destroy(self, uuid):
-        pass

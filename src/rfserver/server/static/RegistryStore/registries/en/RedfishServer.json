@@ -41,6 +41,14 @@
       "NumberOfArgs": 0,
       "ParamTypes": [],
       "Resolution": "Log in with authorized user name and password credentials."
+    },
+    "UnauthorizedResetAction": {
+      "Description": "The reset was not successful, because the user is not authorized to perform a reset action on this virtual macine.",
+      "Message": "The reset was not successful, because the user is not authorized to perform a reset action on this virtual macine.",
+      "Severity": "Critical",
+      "NumberOfArgs": 0,
+      "ParamTypes": [],
+      "Resolution": "Make sure that the user has the right permissions to reset the virtual machine."
     }
   }
 }

@@ -6,10 +6,11 @@
 from rfserver.config import URL
 from flask import Blueprint, jsonify, g, render_template, abort, request
 from rfserver.server.base.models import Server
-from rfserver.server.sessions.decorators import xauth_required
-from rflibvirt.models import Libvirt, RESET
+from rfserver.server.sessions.decorators import xauth_required, login_required
+from rflibvirt.models import Libvirt, ACTIONS
 from rflibvirt import TEMPLATES
 from rfserver.server.decorators import collection
+from rfserver.server.helper.registry import error
 import json
 
 module = Blueprint('system', __name__, url_prefix=URL['SERVICEROOT'],
@@ -37,30 +38,32 @@ def show_domains(domain):
                 server=Server()
         )
     else:
-        abort(404)
+        return (error('Base', 'ResourceMissingAtURI'), 404)
 
 @module.route('/Systems/<domain>/Actions/ComputerSystem.Reset',
         methods=['POST'])
-@xauth_required
+@login_required
 def reset(domain):
     dom = g.libvirt.get_domain(domain)
-    if dom:
-        try:
-            data = json.loads(request.data.decode('utf-8'))
-        except ValueError as error:
-            print(error)
-            abort(500)
 
-        if 'ResetType' in data.keys():
-            username = g.login['USERNAME']
-            action = data['ResetType']
-            if action in RESET.keys():
-                method = getattr(dom, RESET[action])
-                method(username)
-                pass
-            return ("", 200)
-        else:
-            abort(500)
-    else:
-        abort(404)
+    if not dom:
+        return (error('Base', 'ResourceMissingAtURI'), 404)
 
+    try:
+        data = json.loads(request.data.decode('utf-8'))
+    except ValueError as e:
+        logging.error(e)
+        abort(500)
+
+    if 'ResetType' in data.keys():
+        username = g.login['USERNAME']
+        action = g.libvirt.valid_action(data['ResetType'])
+        if action:
+            execute = getattr(dom, action)
+            if execute(username):
+                ("", 200)
+            else:
+                return (error('RedfishServer', 'UnauthorizedResetAction'),
+                        401
+                )
+    return (error('Base', 'ActionNotSupported'), 500)

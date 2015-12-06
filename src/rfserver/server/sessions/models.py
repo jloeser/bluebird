@@ -65,7 +65,11 @@ class Session():
             credential = base64.b64decode(credential).decode('utf-8')
             username, password = credential.split(':')
             if User.is_authenticated(username, password):
-                return True
+                result = {
+                        'USERNAME': username,
+                        'PASSWORD': password
+                }
+                return result
         return False
 
     def create(self, username, password):

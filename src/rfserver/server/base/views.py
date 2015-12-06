@@ -32,6 +32,10 @@ def show_serviceroot():
             redfish_version=REDFISH_VERSION
     )
 
+@module.route(URL['SERVICEROOT'] + '/odata', methods=['GET'])
+def show_odata_service_document():
+    return current_app.send_static_file('odata')
+
 @module.route(URL['SERVICEROOT'] + '/Registries', methods=['GET'])
 @login_required
 def show_registries():

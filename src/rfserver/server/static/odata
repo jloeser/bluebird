@@ -8,11 +8,6 @@
       "url": "/redfish/v1/Systems"
     },
     {
-      "name": "Chassis",
-      "kind": "Singleton",
-      "url": "/redfish/v1/Chassis"
-    },
-    {
       "name": "SessionService",
       "kind": "Singleton",
       "url": "/redfish/v1/SessionService"

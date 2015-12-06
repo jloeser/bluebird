@@ -21,13 +21,6 @@
         "OSType": "{{ domain.get_ostype() }}",
         "ReservedBy": "{{ domain.get_owner() }}"
     },
-    "Links": {
-        "Chassis": [
-            {
-                "@odata.id": "/redfish/v1/Chassis/1U"
-            }
-        ]
-    } ,
     "Actions": {
         "#ComputerSystem.Reset": {
             "target": "/redfish/v1/Systems/{{ domain.name() }}/Actions/ComputerSystem.Reset",

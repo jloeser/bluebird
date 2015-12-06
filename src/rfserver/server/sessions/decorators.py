@@ -6,6 +6,7 @@
 from functools import wraps
 from flask import g, redirect, url_for, request, abort
 from rfserver.server.sessions.models import Session
+from rfserver.server.helper.registry import error
 
 def login_required(f):
     @wraps(f)
@@ -14,7 +15,7 @@ def login_required(f):
         if xauth() or basic_authentication():
             return f(*args, **kwargs)
         else:
-            abort(401)
+            return (error('Base', 'NoValidSession'), 401)
     return decorated_function
 
 def xauth_required(f):
@@ -24,7 +25,7 @@ def xauth_required(f):
         if xauth():
             return f(*args, **kwargs)
         else:
-            abort(401)
+            return (error('Base', 'NoValidSession'), 401)
     return decorated_function
 
 def basic_authentication_required(f):
@@ -34,7 +35,7 @@ def basic_authentication_required(f):
         if basic_authentication():
             return f(*args, **kwargs)
         else:
-            abort(401)
+            return (error('Base', 'NoValidSession'), 401)
     return decorated_function
 
 def xauth():

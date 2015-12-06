@@ -1,0 +1,26 @@
+{
+  "@odata.context": "/redfish/v1/$metadata#Registries/Members/$entity",
+  "@odata.id": "/redfish/v1/Registries/RedfishServer",
+  "@odata.type": "#SchemaFile.1.0.0.SchemaFile",
+  "Description": "Registry Definition File for RedfishServer",
+  "Id": "RedfishServer",
+  "Languages": [
+    "en"
+  ],
+  "Location": [
+    {
+      "Language": "en",
+      "Uri": {
+        "extref": "/redfish/v1/RegistryStore/registries/en/RedfishServer.json"
+      }
+    }
+  ],
+  "Name": "RedfishServer Registry Definition File",
+  "Schema": "RedfishServer.0.10.0",
+  "Type": "SchemaFile.1.0.0",
+  "links": {
+    "self": {
+      "href": "/redfish/v1/Registries/RedfishServer"
+    }
+  }
+}

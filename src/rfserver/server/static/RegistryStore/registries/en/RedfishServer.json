@@ -1,0 +1,46 @@
+{
+  "Name": "RedfishServer Message Registry",
+  "Type": "MessageRegistry.0.10.1",
+  "Language": "en",
+  "Description": "This registry defines the messages for RedfishServer.",
+  "RegistryPrefix": "RedfishServer",
+  "Version": "0.10.0",
+  "OwningEntity": "SUSE",
+  "Messages": {
+    "ExtendedInfo": {
+      "Description": "Indicates that extended information is available.",
+      "Message": "See @Message.ExtendedInfo for more information.",
+      "Severity": "OK",
+      "NumberOfArgs": 0,
+      "Resolution": "See @Message.ExtendedInfo for more information."
+    },
+    "InvalidOperationForSystemState": {
+      "Description": "The operation was not successful due to the current power state (for example, attempting to turn the power off when it is already off).",
+      "Message": "The operation was not successful due to the current power state.",
+      "Severity": "Warning",
+      "NumberOfArgs": 1,
+      "ParamTypes": [
+        "String"
+      ],
+      "Resolution": "Verify that the system is in the correct power state, and then retry the operation."
+    },
+    "SuccessFeedback": {
+      "Description": "The operation completed successfully.",
+      "Message": "The operation completed successfully.",
+      "Severity": "OK",
+      "NumberOfArgs": 1,
+      "ParamTypes": [
+        "String"
+      ],
+      "Resolution": "None"
+    },
+    "UnauthorizedLoginAttempt": {
+      "Description": "The login was not successful, because the supplied credentials could not be authorized.",
+      "Message": "The login was not successful, because the supplied credentials could not be authorized.",
+      "Severity": "Warning",
+      "NumberOfArgs": 0,
+      "ParamTypes": [],
+      "Resolution": "Log in with authorized user name and password credentials."
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+    "error": {
+        "code": "{{ code }}",
+        "message": "{{ message }}",
+        "@Message.ExtendedInfo": [
+        {% for error in errors %}
+            {
+                "@odata.Type": "{{ type }}",
+                "MessageId": "{{ error['ID'] }}",
+                "Message": "{{ error['MESSAGE'] }}",
+                "Severity": "{{ error['SEVERITY'] }}",
+                "Resolution": "{{ error['RESOLUTION'] }}"
+
+            }
+            {% if not loop.last %},{% endif %}
+        {% endfor %}
+        ]
+    }
+}

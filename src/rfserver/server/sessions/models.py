@@ -70,16 +70,16 @@ class Session():
 
     def create(self, username, password):
         # check if a session is active for username and return same session
-        for id, session in self._sessions.items():
-            if session['USERNAME'] == username:
-                logger.debug('Session already exists!')
-                return {
-                        'ID': id,
-                        'X-AUTH': session['X-AUTH'],
-                        'USERNAME': session['USERNAME']
-                }
 
         if User.is_authenticated(username, password):
+            for id, session in self._sessions.items():
+                if session['USERNAME'] == username:
+                    logger.debug('Session already exists!')
+                    return {
+                            'ID': id,
+                            'X-AUTH': session['X-AUTH'],
+                            'USERNAME': session['USERNAME']
+                    }
             # create new session if limit isn't reached
             if self._id < self._limit:
                 id = md5(str.encode(str(self._id)))

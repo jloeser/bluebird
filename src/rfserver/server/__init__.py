@@ -10,7 +10,12 @@ from flask import Flask, request, abort, g
 
 from rfserver.server.sessions.models import Session
 
-app = Flask(__name__)
+app = Flask(__name__,
+        template_folder='{}/templates'.format(
+                os.path.dirname(os.path.realpath(__file__))),
+        static_folder='{}/static'.format(
+                os.path.dirname(os.path.realpath(__file__))),
+        )
 
 @app.before_request
 def set_session_object():

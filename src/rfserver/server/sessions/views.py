@@ -11,6 +11,7 @@ import json
 from flask import Blueprint, jsonify, g, request, abort, url_for, redirect,\
         make_response, render_template
 from rfserver.server.decorators import collection
+from rfserver.server.helper.registry import error
 
 module = Blueprint('sessions', __name__)
 
@@ -35,7 +36,7 @@ def create_session():
             response.headers['X-Auth-Token'] = result['X-AUTH']
             return response
 
-    abort(400)
+    return (error('RedfishServer', 'UnauthorizedLoginAttempt'), 401)
 
 @module.route(URL['SESSIONS'] + '/Sessions', methods=['GET'])
 @login_required

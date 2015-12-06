@@ -1,0 +1,86 @@
+{
+  "@odata.context": "/redfish/v1/$metadata#Registries",
+  "@odata.id": "/redfish/v1/Registries",
+  "@odata.type": "#SchemaFileCollection.SchemaFileCollection",
+  "Description": "Registry Repository",
+  "Items": [
+    {
+      "@odata.context": "/redfish/v1/$metadata#Registries/Members/$entity",
+      "@odata.id": "/redfish/v1/Registries/Base",
+      "@odata.type": "#SchemaFile.1.0.0.SchemaFile",
+      "Description": "Registry Definition File for Base",
+      "Id": "Base",
+      "Languages": [
+        "en"
+      ],
+      "Location": [
+        {
+          "Language": "en",
+          "Uri": {
+            "extref": "/redfish/v1/RegistryStore/registries/en/Base.json"
+          }
+        }
+      ],
+      "Name": "Base Registry Definition File",
+      "Schema": "Base.0.10.0",
+      "Type": "SchemaFile.1.0.0",
+      "links": {
+        "self": {
+          "href": "/redfish/v1/Registries/Base"
+        }
+      }
+    },
+    {
+      "@odata.context": "/redfish/v1/$metadata#Registries/Members/$entity",
+      "@odata.id": "/redfish/v1/Registries/RedfishServer",
+      "@odata.type": "#SchemaFile.1.0.0.SchemaFile",
+      "Description": "Registry Definition File for RedfishServer",
+      "Id": "RedfishServer",
+      "Languages": [
+        "en"
+      ],
+      "Location": [
+        {
+          "Language": "en",
+          "Uri": {
+            "extref": "/redfish/v1/RegistryStore/registries/en/RedfishServer.json"
+          }
+        }
+      ],
+      "Name": "RedfishServer Registry Definition File",
+      "Schema": "RedfishServer.0.10.0",
+      "Type": "SchemaFile.1.0.0",
+      "links": {
+        "self": {
+          "href": "/redfish/v1/Registries/RedfishServer"
+        }
+      }
+    }
+  ],
+  "MemberType": "SchemaFile.1",
+  "Members": [
+    {
+      "@odata.id": "/redfish/v1/Registries/Base"
+    },
+    {
+      "@odata.id": "/redfish/v1/Registries/RedfishServer"
+    }
+  ],
+  "Members@odata.count": 2,
+  "Name": "Registry Repository",
+  "Total": 2,
+  "Type": "Collection.1.0.0",
+  "links": {
+    "Member": [
+      {
+        "href": "/redfish/v1/Registries/Base"
+      },
+      {
+        "href": "/redfish/v1/Registries/RedfishServer"
+      }
+    ],
+    "self": {
+      "href": "/redfish/v1/Registries"
+    }
+  }
+}

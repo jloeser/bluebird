@@ -41,8 +41,9 @@ def start(module, use_ssl=True):
         logger.debug(" * Module '{}' found.".format(
                 system.NAME
         ))
-    except ImportError:
-        logger.error("Couldn't find module '{}'. Exit.".format(
+    except ImportError as e:
+        logger.error(str(e))
+        logger.error("Couldn't import module '{}'. Exit.".format(
             module
         ))
         sys.exit(1)

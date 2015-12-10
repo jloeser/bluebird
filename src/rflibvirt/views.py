@@ -7,7 +7,7 @@ from rfserver.config import URL
 from flask import Blueprint, jsonify, g, render_template, abort, request
 from rfserver.server.base.models import Server
 from rfserver.server.sessions.decorators import xauth_required, login_required
-from rflibvirt.models import Libvirt, ACTIONS
+from rflibvirt.models import LibvirtMonitor
 from rflibvirt import TEMPLATES
 from rfserver.server.decorators import collection
 from rfserver.server.helper.registry import error
@@ -18,7 +18,7 @@ module = Blueprint('system', __name__, url_prefix=URL['SERVICEROOT'],
 
 @module.before_request
 def set_libvirt_object():
-    g.libvirt = Libvirt()
+    g.libvirt = LibvirtMonitor()
     # probe for domains which may have changed
     g.libvirt.probe()
 

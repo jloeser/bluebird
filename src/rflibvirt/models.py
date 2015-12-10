@@ -112,51 +112,51 @@ class Domain(libvirt.virDomain):
 
 
 
-class Libvirt():
+class LibvirtMonitor():
 
-    _instance = None
-    _initialized = False
-    _conn = None
-    _domains = {}
+    __instance = None
+    __initialized = False
+    __conn = None
+    __domains = {}
 
     def __new__(cls, *args, **kwargs):
-        if not cls._instance:
-            cls._instance = super(Libvirt, cls).__new__(
+        if not cls.__instance:
+            cls.__instance = super(LibvirtMonitor, cls).__new__(
                     cls, *args, **kwargs
             )
-        return cls._instance
+        return cls.__instance
 
     def __init__(self):
-        if not Libvirt._initialized:
+        if not LibvirtMonitor.__initialized:
             try:
-                self._conn = libvirt.open(LIBVIRT_URI)
+                self.__conn = libvirt.open(LIBVIRT_URI)
             except libvirt.libvirtError:
                 raise NoSystemFoundException
 
-            if not self._conn:
+            if not self.__conn:
                 raise NoSystemFoundException
 
-            self._domains = {}
+            self.__domains = {}
             logger.info(" * Running hypervisor: {0} {1}".format(
-                    self._conn.getType(),
-                    self._get_version_str(self._conn.getVersion())
+                    self.__conn.getType(),
+                    self._get_version_str(self.__conn.getVersion())
             ))
             logger.info(" * Library: {}".format(
-                    self._get_version_str(self._conn.getLibVersion())
+                    self._get_version_str(self.__conn.getLibVersion())
             ))
 
-            Libvirt._initialized = True
+            self.__initialized = True
 
-    def _collect_domains(self):
-        self._domains = {}
-        if self._conn.listAllDomains():
-            for domain in self._conn.listAllDomains():
+    def _collect__domains(self):
+        self.__domains = {}
+        if self.__conn.listAllDomains():
+            for domain in self.__conn.listAllDomains():
                 owner = System.get_owner(domain.name())
-                self._domains[domain.UUIDString()] = Domain(domain, owner)
+                self.__domains[domain.UUIDString()] = Domain(domain, owner)
 
     def probe(self):
-        self._collect_domains()
-        logger.info(" * Definded domains: {}".format(len(self._domains)))
+        self._collect__domains()
+        logger.info(" * Definded domains: {}".format(len(self.__domains)))
 
 
     def _get_version_str(self, version):
@@ -170,13 +170,13 @@ class Libvirt():
             raise TypeError
     @property
     def domains(self):
-        return self._domains
+        return self.__domains
 
     def get_domains(self):
-        return self._domains.values()
+        return self.__domains.values()
 
     def get_domain(self, name):
-        for uuid, domain in self._domains.items():
+        for uuid, domain in self.__domains.items():
             if domain.name() == name:
                 return domain
         return None

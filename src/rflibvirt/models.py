@@ -139,27 +139,22 @@ class LibvirtMonitor():
             self.__domains = {}
             logger.info(" * Running hypervisor: {0} {1}".format(
                     self.__conn.getType(),
-                    self._get_version_str(self.__conn.getVersion())
+                    self.__get_version_str(self.__conn.getVersion())
             ))
             logger.info(" * Library: {}".format(
-                    self._get_version_str(self.__conn.getLibVersion())
+                    self.__get_version_str(self.__conn.getLibVersion())
             ))
 
             self.__initialized = True
 
-    def _collect__domains(self):
+    def __collect_domains(self):
         self.__domains = {}
         if self.__conn.listAllDomains():
             for domain in self.__conn.listAllDomains():
                 owner = System.get_owner(domain.name())
                 self.__domains[domain.UUIDString()] = Domain(domain, owner)
 
-    def probe(self):
-        self._collect__domains()
-        logger.info(" * Definded domains: {}".format(len(self.__domains)))
-
-
-    def _get_version_str(self, version):
+    def __get_version_str(self, version):
         if isinstance(version, int):
            version = str(version).split('0')
            version = list(filter(('').__ne__, version))
@@ -168,6 +163,11 @@ class LibvirtMonitor():
             return version
         else:
             raise TypeError
+
+    def probe(self):
+        self.__collect_domains()
+        logger.info(" * Definded domains: {}".format(len(self.__domains)))
+
     @property
     def domains(self):
         return self.__domains

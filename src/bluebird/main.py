@@ -14,7 +14,7 @@ from flask import Flask
 import argparse
 import logging
 
-logger = logging.getLogger('main')
+logger = logging.getLogger(config.PROGRAM_NAME_SHORT)
 
 def probe_modules():
     """
@@ -59,6 +59,8 @@ def start(module, use_ssl=True):
     else:
         logger.warning("No SSL encryption!")
         encryption = None
+
+    logger.info(" *** {} started... ".format(config.PROGRAM_NAME.title()))
 
     app.run(
             host=config.SERVER['ADDRESS'],

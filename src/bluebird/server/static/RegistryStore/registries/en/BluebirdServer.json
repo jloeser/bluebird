@@ -49,6 +49,14 @@
       "NumberOfArgs": 0,
       "ParamTypes": [],
       "Resolution": "Make sure that the user has the right permissions to reset the virtual machine."
+    },
+    "NoAuthorizationModule": {
+      "Description": "No authorization module available.",
+      "Message": "No authorization module is set.",
+      "Severity": "Critical",
+      "NumberOfArgs": 0,
+      "ParamTypes": [],
+      "Resolution": "Set an authorization module for user authentication."
     }
   }
 }

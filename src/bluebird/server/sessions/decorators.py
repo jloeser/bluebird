@@ -51,12 +51,13 @@ def xauth():
 
 def basic_authentication():
     """Check for basic authentication (RFC 2617, section 2)"""
-    g.basic_auth = request.headers.get('Authorization')
-    if g.basic_auth:
-        result = g.session.check_basic_auth(g.basic_auth)
+    basic_auth = request.headers.get('Authorization')
+
+    if basic_auth:
+        result = g.session.check_basic_auth(basic_auth)
         if result:
             g.login = result
             return True
-    else:
-        return False
+
+    return False
 

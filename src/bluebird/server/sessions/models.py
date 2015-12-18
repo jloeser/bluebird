@@ -8,13 +8,12 @@ import base64
 from hashlib import md5
 from time import time
 from datetime import datetime, timedelta
-from bluebird.server.authentication.user import User
 
 logger = logging.getLogger('session')
 
-class BluebirdAuthorization():
+class BluebirdAuthentication():
 
-    def authorize(username, password):
+    def is_authenticated(self, username, password):
         pass
 
 class Session():
@@ -26,7 +25,7 @@ class Session():
     __sessions = {}
     __limit = 10
     __id = 0
-    __authorization_instance = None
+    __authentication_instance = None
 
 
     def __new__(cls, *args, **kwargs):
@@ -67,15 +66,16 @@ class Session():
         return False
 
     def check_basic_auth(self, basic_auth):
-        if not self.__authorization_instance:
-            logger.error("No authorization module is set!")
+        if not self.__authentication_instance:
+            logger.error("No authentication module is set!")
             return False
 
         prefix, credential = basic_auth.split(' ')
         if prefix == 'Basic':
             credential = base64.b64decode(credential).decode('utf-8')
             username, password = credential.split(':')
-            if User.is_authenticated(username, password):
+            if self.__authentication_instance.is_authenticated(
+                    username, password):
                 result = {
                         'USERNAME': username,
                         'PASSWORD': password
@@ -84,12 +84,12 @@ class Session():
         return False
 
     def create(self, username, password):
-        if not self.__authorization_instance:
-            logger.error("No authorization module is set!")
-            return ('BluebirdServer', 'NoAuthorizationModule', 500)
+        if not self.__authentication_instance:
+            logger.error("No authentication module is set!")
+            return ('BluebirdServer', 'NoAuthenticationModule', 500)
 
         # check if a session is active for username and return same session
-        if User.is_authenticated(username, password):
+        if self.__authentication_instance.is_authenticated(username, password):
             for id, session in self.__sessions.items():
                 if session['USERNAME'] == username:
                     logger.debug('Session already exists!')
@@ -129,9 +129,10 @@ class Session():
             del self.__sessions[id]
         return True
 
-    def set_authorization_instance(instance):
+    def set_authentication_instance(instance):
         """
-        Set the authorization instance; must be a subclass of BluebirdAuthorization.
+        Set the authentication instance; must be a subclass of
+        BluebirdAuthentication.
         """
-        if isinstance(instance, BluebirdAuthorization):
-            self.__authorization_instance = instance
+        if isinstance(instance, BluebirdAuthentication):
+            Session.__authentication_instance = instance

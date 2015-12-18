@@ -9,3 +9,7 @@ import os
 TEMPLATES = os.path.dirname(__file__) + '/templates'
 
 from rflibvirt.views import module
+from rflibvirt.authentication import *
+from bluebird.server.sessions.models import Session
+
+Session.set_authentication_instance(LocalUser())

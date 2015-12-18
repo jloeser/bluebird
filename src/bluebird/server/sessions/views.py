@@ -42,6 +42,8 @@ def create_session():
                     str(result['ID'])
             response.headers['X-Auth-Token'] = result['X-AUTH']
             return response
+    else:
+        return (error('Base', 'MalformedJSON'), 500)
 
     return (error('BluebirdServer', 'UnauthorizedLoginAttempt'), 401)
 

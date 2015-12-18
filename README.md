@@ -1,2 +1,1 @@
-# redfish-server
-redfish-server
+# Bluefish-Server

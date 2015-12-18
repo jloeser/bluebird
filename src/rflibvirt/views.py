@@ -3,14 +3,14 @@
 #
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
-from rfserver.config import URL
+from bluebird.config import URL
 from flask import Blueprint, jsonify, g, render_template, abort, request
-from rfserver.server.base.models import Server
-from rfserver.server.sessions.decorators import xauth_required, login_required
+from bluebird.server.base.models import Server
+from bluebird.server.sessions.decorators import xauth_required, login_required
 from rflibvirt.models import LibvirtMonitor
 from rflibvirt import TEMPLATES
-from rfserver.server.decorators import collection
-from rfserver.server.helper.registry import error
+from bluebird.server.decorators import collection
+from bluebird.server.helper.registry import error
 import json
 
 module = Blueprint('system', __name__, url_prefix=URL['SERVICEROOT'],
@@ -62,7 +62,7 @@ def reset(domain):
             if execute(username):
                 ("", 200)
             else:
-                return (error('RedfishServer', 'UnauthorizedResetAction'),
+                return (error('BluebirdServer', 'UnauthorizedResetAction'),
                         401
                 )
     return (error('Base', 'ActionNotSupported'), 500)

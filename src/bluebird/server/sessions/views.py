@@ -3,15 +3,15 @@
 #
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
-from rfserver.config import URL
-from rfserver.server.sessions.decorators import login_required,\
+from bluebird.config import URL
+from bluebird.server.sessions.decorators import login_required,\
         xauth_required, basic_authentication_required
-from rfserver.server.sessions.models import Session
+from bluebird.server.sessions.models import Session
 import json
 from flask import Blueprint, jsonify, g, request, abort, url_for, redirect,\
         make_response, render_template
-from rfserver.server.decorators import collection
-from rfserver.server.helper.registry import error
+from bluebird.server.decorators import collection
+from bluebird.server.helper.registry import error
 
 module = Blueprint('sessions', __name__)
 
@@ -43,7 +43,7 @@ def create_session():
             response.headers['X-Auth-Token'] = result['X-AUTH']
             return response
 
-    return (error('RedfishServer', 'UnauthorizedLoginAttempt'), 401)
+    return (error('BluebirdServer', 'UnauthorizedLoginAttempt'), 401)
 
 @module.route(URL['SESSIONS'] + '/Sessions', methods=['GET'])
 @login_required

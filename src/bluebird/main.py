@@ -4,10 +4,10 @@
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
 import sys
-from rfserver import log
+from bluebird import log
 
-from rfserver import config
-from rfserver.server import app
+from bluebird import config
+from bluebird.server import app
 
 from importlib import import_module
 from flask import Flask

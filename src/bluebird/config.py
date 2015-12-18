@@ -3,8 +3,8 @@
 #
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
-PROGRAM_NAME = 'redfish-server'
-PROGRAM_NAME_SHORT = 'rfserver'
+PROGRAM_NAME = 'bluebird-server'
+PROGRAM_NAME_SHORT = 'bluebird'
 PROGRAM_VERSION = '0.1'
 
 LOGGER = {

@@ -8,8 +8,8 @@ import sys
 
 from flask import Flask, request, abort, g
 
-from rfserver.server.sessions.models import Session
-from rfserver.server.helper.registry import error
+from bluebird.server.sessions.models import Session
+from bluebird.server.helper.registry import error
 import json
 
 app = Flask(__name__,
@@ -45,8 +45,8 @@ def set_content_type(response):
     response.headers['Content-Type'] = content
     return response
 
-from rfserver.server.base.views import module as baseModule
+from bluebird.server.base.views import module as baseModule
 app.register_blueprint(baseModule)
 
-from rfserver.server.sessions.views import module as sessionModule
+from bluebird.server.sessions.views import module as sessionModule
 app.register_blueprint(sessionModule)

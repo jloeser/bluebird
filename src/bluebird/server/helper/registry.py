@@ -12,10 +12,10 @@ logger = logging.getLogger('message')
 
 REGISTRIES = {
         'Base': '/RegistryStore/registries/en/Base.json',
-        'RedfishServer': '/RegistryStore/registries/en/RedfishServer.json'
+        'BluebirdServer': '/RegistryStore/registries/en/BluebirdServer.json'
 }
 
-CODE = 'RedfishServer.0.10.ExtendedInfo'
+CODE = 'BluebirdServer.0.10.ExtendedInfo'
 TYPE = '/redfish/v1/$metadata#Message.1.0.0.Message'
 
 def get_message(registry, id):

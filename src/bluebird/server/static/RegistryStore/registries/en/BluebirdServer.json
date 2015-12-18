@@ -1,9 +1,9 @@
 {
-  "Name": "RedfishServer Message Registry",
+  "Name": "BluebirdServer Message Registry",
   "Type": "MessageRegistry.0.10.1",
   "Language": "en",
-  "Description": "This registry defines the messages for RedfishServer.",
-  "RegistryPrefix": "RedfishServer",
+  "Description": "This registry defines the messages for BluebirdServer.",
+  "RegistryPrefix": "BluebirdServer",
   "Version": "0.10.0",
   "OwningEntity": "SUSE",
   "Messages": {

@@ -8,7 +8,7 @@ import base64
 from hashlib import md5
 from time import time
 from datetime import datetime, timedelta
-from rfserver.server.authentication.user import User
+from bluebird.server.authentication.user import User
 
 logger = logging.getLogger('session')
 

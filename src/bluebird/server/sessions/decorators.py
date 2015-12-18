@@ -5,8 +5,8 @@
 # Published under the GNU Public Licence 2
 from functools import wraps
 from flask import g, redirect, url_for, request, abort
-from rfserver.server.sessions.models import Session
-from rfserver.server.helper.registry import error
+from bluebird.server.sessions.models import Session
+from bluebird.server.helper.registry import error
 
 def login_required(f):
     @wraps(f)

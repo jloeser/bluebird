@@ -3,10 +3,10 @@
 #
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
-from rfserver.config import URL, REDFISH_VERSION, REDFISH_VERSION_MAJOR
-from rfserver.server.base.models import Server
+from bluebird.config import URL, REDFISH_VERSION, REDFISH_VERSION_MAJOR
+from bluebird.server.base.models import Server
 from flask import Blueprint, render_template, redirect, g, current_app
-from rfserver.server.sessions.decorators import login_required
+from bluebird.server.sessions.decorators import login_required
 
 module = Blueprint('base', __name__)
 
@@ -50,12 +50,12 @@ def show_registries():
 def show_base_registry():
     return current_app.send_static_file('Registries/Base.json')
 
-@module.route(URL['SERVICEROOT'] + '/Registries/RedfishServer',
+@module.route(URL['SERVICEROOT'] + '/Registries/BluebirdServer',
         methods=['GET']
 )
 @login_required
 def show_redfishserver_registry():
-    return current_app.send_static_file('Registries/RedfishServer.json')
+    return current_app.send_static_file('Registries/BluebirdServer.json')
 
 @module.route(URL['SERVICEROOT'] +\
         '/RegistryStore/registries/en/Base.json', methods=['GET']
@@ -67,12 +67,12 @@ def show_base_registry_full():
     )
 
 @module.route(URL['SERVICEROOT'] +\
-        '/RegistryStore/registries/en/RedfishServer.json', methods=['GET']
+        '/RegistryStore/registries/en/BluebirdServer.json', methods=['GET']
 )
 @login_required
 def show_redfishserver_registry_full():
     return current_app.send_static_file(
-            'RegistryStore/registries/en/RedfishServer.json'
+            'RegistryStore/registries/en/BluebirdServer.json'
     )
 
 

@@ -5,7 +5,7 @@
 # Published under the GNU Public Licence 2
 import sys
 import logging
-from rfserver import config
+from bluebird import config
 
 if __name__ == '__main__':
     print("Error: module must be imported")

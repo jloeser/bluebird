@@ -32,10 +32,10 @@
     },
     {
       "@odata.context": "/redfish/v1/$metadata#Registries/Members/$entity",
-      "@odata.id": "/redfish/v1/Registries/RedfishServer",
+      "@odata.id": "/redfish/v1/Registries/BluebirdServer",
       "@odata.type": "#SchemaFile.1.0.0.SchemaFile",
-      "Description": "Registry Definition File for RedfishServer",
-      "Id": "RedfishServer",
+      "Description": "Registry Definition File for BluebirdServer",
+      "Id": "BluebirdServer",
       "Languages": [
         "en"
       ],
@@ -43,16 +43,16 @@
         {
           "Language": "en",
           "Uri": {
-            "extref": "/redfish/v1/RegistryStore/registries/en/RedfishServer.json"
+            "extref": "/redfish/v1/RegistryStore/registries/en/BluebirdServer.json"
           }
         }
       ],
-      "Name": "RedfishServer Registry Definition File",
-      "Schema": "RedfishServer.0.10.0",
+      "Name": "BluebirdServer Registry Definition File",
+      "Schema": "BluebirdServer.0.10.0",
       "Type": "SchemaFile.1.0.0",
       "links": {
         "self": {
-          "href": "/redfish/v1/Registries/RedfishServer"
+          "href": "/redfish/v1/Registries/BluebirdServer"
         }
       }
     }
@@ -63,7 +63,7 @@
       "@odata.id": "/redfish/v1/Registries/Base"
     },
     {
-      "@odata.id": "/redfish/v1/Registries/RedfishServer"
+      "@odata.id": "/redfish/v1/Registries/BluebirdServer"
     }
   ],
   "Members@odata.count": 2,
@@ -76,7 +76,7 @@
         "href": "/redfish/v1/Registries/Base"
       },
       {
-        "href": "/redfish/v1/Registries/RedfishServer"
+        "href": "/redfish/v1/Registries/BluebirdServer"
       }
     ],
     "self": {

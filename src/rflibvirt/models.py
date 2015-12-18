@@ -6,7 +6,6 @@
 import logging
 import libvirt
 from rflibvirt import NAME
-from bluebird.server.authentication.system import System
 
 LIBVIRT_URI = 'qemu:///system'
 ACTIVE = 0

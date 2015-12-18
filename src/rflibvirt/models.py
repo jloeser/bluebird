@@ -95,7 +95,6 @@ class Domain(libvirt.virDomain):
             )
             return False
 
-
     def destroy(self, username):
         if username == self.get_owner():
             try:
@@ -129,7 +128,7 @@ class LibvirtMonitor():
     def __init__(self):
         if not LibvirtMonitor.__initialized:
             try:
-                self.__conn = libvirt.open(LIBVIRT_URI)
+                self.__conn = libvirt.openReadOnly(LIBVIRT_URI)
             except libvirt.libvirtError:
                 raise NoSystemFoundException
 

@@ -81,8 +81,8 @@ class Session():
                     logger.debug('Session already exists!')
                     return {
                             'ID': id,
-                            'X-AUTH': session['X-AUTH'],
-                            'USERNAME': session['USERNAME']
+                            'USERNAME': session['USERNAME'],
+                            'X-AUTH': session['X-AUTH']
                     }
             # create new session if limit isn't reached
             if self._id < self._limit:
@@ -100,11 +100,14 @@ class Session():
                 }
                 self._sessions[id] = {
                         'USERNAME': username,
+                        'PASSWORD': password,
                         'X-AUTH': xauth,
                         'TIME': current
                 }
                 self._id += 1
                 return result
+            else:
+                return ('Base', 'SessionLimitExceeded', 403)
         return False
 
     def delete(self, id):

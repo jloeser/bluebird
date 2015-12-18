@@ -9,6 +9,7 @@ import sys
 from flask import Flask, request, abort, g
 
 from rfserver.server.sessions.models import Session
+from rfserver.server.helper.registry import error
 import json
 
 app = Flask(__name__,
@@ -31,8 +32,7 @@ def check_content_type():
         if content_type == 'application/json':
             return
         else:
-            message = {"Message": "Server only accepts application/json"}
-            return (json.dumps(message), 500)
+            return (error('Base', 'MalformedJSON'), 500)
 
 @app.after_request
 def set_content_type(response):

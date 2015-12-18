@@ -52,8 +52,7 @@ def reset(domain):
     try:
         data = json.loads(request.data.decode('utf-8'))
     except ValueError as e:
-        logging.error(e)
-        abort(500)
+        return (error('Base', 'MalformedJSON'), 400)
 
     if 'ResetType' in data.keys():
         username = g.login['USERNAME']

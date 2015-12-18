@@ -17,13 +17,20 @@ module = Blueprint('sessions', __name__)
 
 @module.route(URL['SESSIONS'] + '/Sessions', methods=['POST'])
 def create_session():
-    data = json.loads(request.data.decode('utf-8'))
+    try:
+        data = json.loads(request.data.decode('utf-8'))
+    except ValueError as e:
+        return (error('Base', 'MalformedJSON'), 400)
 
     if 'UserName' in data.keys() and 'Password' in data.keys():
         result = g.session.create(
                 username=data['UserName'],
                 password=data['Password']
         )
+
+        if isinstance(result, tuple):
+            return (error(result[0], result[1]), result[2])
+
         if result:
             response = make_response(
                     render_template('sessions/Session.1.0.0.json',

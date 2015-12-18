@@ -12,40 +12,44 @@ from bluebird.server.authentication.user import User
 
 logger = logging.getLogger('session')
 
+class BluebirdAuthorization():
+    pass
+
 class Session():
 
-    _instance = None
-    _initialized = False
+    __instance = None
+    __initialized = False
     # according to SessionService.1.0.0, timeout mus be between 30 and 86400
-    _session_timeout_min = 30
-    _sessions = {}
-    _limit = 10
-    _id = 0
+    __session_timeout_min = 30
+    __sessions = {}
+    __limit = 10
+    __id = 0
+
 
     def __new__(cls, *args, **kwargs):
-        if not cls._instance:
-            cls._instance = super(Session, cls).__new__(
+        if not cls.__instance:
+            cls.__instance = super(Session, cls).__new__(
                     cls, *args, **kwargs
             )
-        return cls._instance
+        return cls.__instance
 
     def __init__(self):
-        if not Session._initialized:
+        if not Session.__initialized:
             logger.debug(" * Sessions initialized.")
-            Session._initialized = True
+            Session.__initialized = True
 
     def get_timeout():
-        return Session._session_timeout_min
+        return Session.__session_timeout_min
 
-    def get_sessions():
-        return Session._sessions.keys()
+    def get__sessions():
+        return Session.__sessions.keys()
 
     def check_xauth(self, xauth):
-        for id, data in self._sessions.items():
+        for id, data in self.__sessions.items():
             if data['X-AUTH'] == xauth:
                 current = datetime.now()
                 timestamp = datetime.fromtimestamp(data['TIME'])
-                if (current - timestamp) < timedelta(minutes=self._session_timeout_min):
+                if (current - timestamp) < timedelta(minutes=self.__session_timeout_min):
                     logger.debug("'{}' is valid.".format(xauth))
                     data['TIME'] = time()
                     data['USERNAME'] = data['USERNAME']
@@ -53,7 +57,7 @@ class Session():
                     return data
                 else:
                     logger.debug("Session expired.")
-                    del self._sessions[id]
+                    del self.__sessions[id]
                     break
 
         logger.debug("'{}' is invalid.".format(xauth))
@@ -76,7 +80,7 @@ class Session():
         # check if a session is active for username and return same session
 
         if User.is_authenticated(username, password):
-            for id, session in self._sessions.items():
+            for id, session in self.__sessions.items():
                 if session['USERNAME'] == username:
                     logger.debug('Session already exists!')
                     return {
@@ -85,8 +89,8 @@ class Session():
                             'X-AUTH': session['X-AUTH']
                     }
             # create new session if limit isn't reached
-            if self._id < self._limit:
-                id = md5(str.encode(str(self._id)))
+            if self.__id < self.__limit:
+                id = md5(str.encode(str(self.__id)))
                 id = id.hexdigest()
                 current = time()
                 xauth = md5()
@@ -98,19 +102,19 @@ class Session():
                         'USERNAME': username,
                         'X-AUTH': xauth,
                 }
-                self._sessions[id] = {
+                self.__sessions[id] = {
                         'USERNAME': username,
                         'PASSWORD': password,
                         'X-AUTH': xauth,
                         'TIME': current
                 }
-                self._id += 1
+                self.__id += 1
                 return result
             else:
                 return ('Base', 'SessionLimitExceeded', 403)
         return False
 
     def delete(self, id):
-        if id in self._sessions.keys():
-            del self._sessions[id]
+        if id in self.__sessions.keys():
+            del self.__sessions[id]
         return True

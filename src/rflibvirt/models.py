@@ -32,9 +32,8 @@ logger = logging.getLogger(NAME)
 
 class Domain(libvirt.virDomain):
 
-    def __init__(self, domain, owner):
+    def __init__(self, domain):
         libvirt.virDomain.__init__(self, domain, domain._o)
-        self._owner = owner
 
     def __del__(self):
         pass
@@ -71,42 +70,11 @@ class Domain(libvirt.virDomain):
     def get_ostype(self):
         return self.OSType()
 
-    def get_owner(self):
-        if self._owner:
-            return self._owner
-        else:
-            return NOT_AVAILABLE
-
-    def set_owner(self, username):
-        self._owner = username
-
     def start(self, username):
-        if username == self.get_owner():
-            try:
-                self.create()
-                return True
-            except libvirt.libvirtError as error:
-                logger.error(error)
-                return False
-        else:
-            logger.error("Permission denied for user '{}' ('{}').".format(
-                    username, self.name())
-            )
-            return False
+        pass
 
     def destroy(self, username):
-        if username == self.get_owner():
-            try:
-                libvirt.virDomain.destroy(self)
-                return True
-            except libvirt.libvirtError as error:
-                logger.error(error)
-                return False
-        else:
-            logger.error("Permission denied for user '{}' ('{}').".format(
-                    username, self.name())
-            )
-            return False
+        pass
 
 
 
@@ -149,8 +117,7 @@ class LibvirtMonitor():
         self.__domains = {}
         if self.__conn.listAllDomains():
             for domain in self.__conn.listAllDomains():
-                owner = System.get_owner(domain.name())
-                self.__domains[domain.UUIDString()] = Domain(domain, owner)
+                self.__domains[domain.UUIDString()] = Domain(domain)
 
     def __get_version_str(self, version):
         if isinstance(version, int):

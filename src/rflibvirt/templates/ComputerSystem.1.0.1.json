@@ -18,8 +18,7 @@
         "MaxMemoryMiB": {{ domain.get_max_memory() }},
         "UsedMemoryMiB": {{ domain.get_used_memory() }},
         "VirtualCPUs": {{ domain.get_number_virtual_cpus() }},
-        "OSType": "{{ domain.get_ostype() }}",
-        "ReservedBy": "{{ domain.get_owner() }}"
+        "OSType": "{{ domain.get_ostype() }}"
     },
     "Actions": {
         "#ComputerSystem.Reset": {

@@ -136,3 +136,6 @@ class Session():
         """
         if isinstance(instance, BluebirdAuthentication):
             Session.__authentication_instance = instance
+
+    def get_authentication_name():
+        return Session.__authentication_instance.__class__.__name__

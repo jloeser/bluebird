@@ -7,7 +7,7 @@ from bluebird.config import URL
 from flask import Blueprint, jsonify, g, render_template, abort, request
 from bluebird.server.base.models import Server
 from bluebird.server.sessions.decorators import xauth_required, login_required
-from rflibvirt.models import LibvirtMonitor
+from rflibvirt.models import LibvirtMonitor, LibvirtManage
 from rflibvirt import TEMPLATES
 from bluebird.server.decorators import collection
 from bluebird.server.helper.registry import error
@@ -55,14 +55,10 @@ def reset(domain):
         return (error('Base', 'MalformedJSON'), 400)
 
     if 'ResetType' in data.keys():
-        username = g.login['USERNAME']
         action = g.libvirt.valid_action(data['ResetType'])
         if action:
+            credentials = (g.login['USERNAME'], g.login['PASSWORD'])
             execute = getattr(dom, action)
-            if execute(username):
-                ("", 200)
-            else:
-                return (error('BluebirdServer', 'UnauthorizedResetAction'),
-                        401
-                )
+            credentials = (credentials)
+            manager = LibvirtManage(credentials)
     return (error('Base', 'ActionNotSupported'), 500)

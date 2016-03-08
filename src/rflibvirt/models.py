@@ -6,6 +6,7 @@
 import logging
 import libvirt
 from rflibvirt import NAME
+from bluebird.server.sessions.models import Session
 
 LIBVIRT_URI = 'qemu:///system'
 ACTIVE = 0
@@ -151,3 +152,15 @@ class LibvirtMonitor():
             return ACTIONS[action]
         return None
 
+
+class LibvirtManage():
+
+    def __init__(self, credentials):
+        self.__username = credentials[0]
+        self.__password = credentials[1]
+
+    def start(self, domainname):
+        pass
+
+class LibvirtManageLocalUser(LibvirtManage):
+    pass

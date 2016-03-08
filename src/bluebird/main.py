@@ -6,7 +6,7 @@
 import sys
 from bluebird import log
 
-from bluebird import config
+from bluebird import core
 from bluebird.server import app
 
 from importlib import import_module
@@ -14,7 +14,7 @@ from flask import Flask
 import argparse
 import logging
 
-logger = logging.getLogger(config.PROGRAM_NAME_SHORT)
+logger = logging.getLogger(core.PROGRAM_NAME_SHORT)
 
 def probe_modules():
     """
@@ -26,7 +26,7 @@ def probe_modules():
     modules = ['rflibvirt']
     return modules
 
-def start(module, use_ssl=True):
+def start(module, use_ssl=True, use_wsgi_debugger=False):
     """
     Main function.
 
@@ -50,21 +50,21 @@ def start(module, use_ssl=True):
 
     app.config['MODULE'] = system.NAME
     app.register_blueprint(system.views.module)
-    app.config.from_object(config)
-    if app.config['SERVER']['DEBUG']:
-        app.config['DEBUG'] = True
+    app.config.from_object(core)
+
+    app.config['DEBUG'] = use_wsgi_debugger
 
     if use_ssl:
-        encryption = (config.SERVER['SSL_CRT'], config.SERVER['SSL_KEY'])
+        encryption = (core.SERVER['SSL_CRT'], core.SERVER['SSL_KEY'])
     else:
         logger.warning("No SSL encryption!")
         encryption = None
 
-    logger.info(" *** {} started... ".format(config.PROGRAM_NAME.title()))
+    logger.info(" *** {} started... ".format(core.PROGRAM_NAME.title()))
 
     app.run(
-            host=config.SERVER['ADDRESS'],
-            port=config.SERVER['PORT'],
+            host=core.SERVER['ADDRESS'],
+            port=core.SERVER['PORT'],
             ssl_context=encryption
     )
 
@@ -74,7 +74,7 @@ def run():
     """
 
     parser = argparse.ArgumentParser(
-            prog=config.PROGRAM_NAME,
+            prog=core.PROGRAM_NAME,
             formatter_class=argparse.RawTextHelpFormatter,
             add_help=False
     )
@@ -97,7 +97,7 @@ modules have been found:\n\n{}".format('\n'.join(probe_modules()))
             '--version',
             action='version',
             version="Copyright (c) 2015 SUSE LINUX GmbH\n{} v{}".format(
-                    config.PROGRAM_NAME, config.PROGRAM_VERSION
+                    core.PROGRAM_NAME, core.PROGRAM_VERSION
             ),
             help="Show version."
     )
@@ -106,6 +106,11 @@ modules have been found:\n\n{}".format('\n'.join(probe_modules()))
             '--debug',
             action='store_true',
             help="Show debug messages."
+    )
+    parser.add_argument(
+            '--debug-wsgi',
+            action='store_true',
+            help="Show WSGI (werkzeug) debug messages."
     )
     parser.add_argument(
             '--no-ssl',
@@ -124,6 +129,12 @@ modules have been found:\n\n{}".format('\n'.join(probe_modules()))
     if args.debug:
         logger.set_global_level('DEBUG')
     else:
-        logger.set_global_level(config.LOGGER['LEVEL'])
+        logger.set_global_level(core.LOGGER['LEVEL'])
 
-    start(args.module, use_ssl=not args.no_ssl)
+    # enable debug messages (WSGI)
+    if args.debug_wsgi:
+        wsgi_debug = args.debug_wsgi
+    else:
+        wsgi_debug = core.SERVER['DEBUG']
+
+    start(args.module, use_ssl=not args.no_ssl, use_wsgi_debugger=wsgi_debug)

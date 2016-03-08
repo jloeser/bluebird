@@ -3,7 +3,7 @@
 #
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
-from bluebird.config import URL, REDFISH_VERSION, REDFISH_VERSION_MAJOR
+from bluebird.core import URL, REDFISH_VERSION, REDFISH_VERSION_MAJOR
 from bluebird.server.base.models import Server
 from flask import Blueprint, render_template, redirect, g, current_app
 from bluebird.server.sessions.decorators import login_required

@@ -7,7 +7,7 @@ import os
 import sys
 sys.path.append('../')
 import server
-import config
+import core
 import unittest
 import json
 

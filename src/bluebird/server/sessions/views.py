@@ -3,7 +3,7 @@
 #
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
-from bluebird.config import URL
+from bluebird.core import URL
 from bluebird.server.sessions.decorators import login_required,\
         xauth_required, basic_authentication_required
 from bluebird.server.sessions.models import Session

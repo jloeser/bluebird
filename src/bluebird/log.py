@@ -5,11 +5,12 @@
 # Published under the GNU Public Licence 2
 import sys
 import logging
-from bluebird import config
+from bluebird import core
 
 if __name__ == '__main__':
     print("Error: module must be imported")
     sys.exit(1)
+
 # https://svn.blender.org/svnroot/bf-blender/trunk/blender/build_files/scons/tools/bcolors.py
 class esc:
     HEADER = '\033[95m'

@@ -17,7 +17,7 @@ SERVER = {
         'PORT': 4443,
         'SSL_CRT': '../server.crt',
         'SSL_KEY': '../server.key',
-        'DEBUG': True
+        'DEBUG': False
 }
 
 MAJOR_VERSION = 1

@@ -3,7 +3,7 @@
 #
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
-from bluebird.config import URL
+from bluebird.core import URL
 from flask import Blueprint, jsonify, g, render_template, abort, request
 from bluebird.server.base.models import Server
 from bluebird.server.sessions.decorators import xauth_required, login_required

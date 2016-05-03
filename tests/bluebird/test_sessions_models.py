@@ -11,12 +11,6 @@ from bluebird.server.sessions import models
 from bluebird.server.sessions.exceptions import NoAuthModule
 
 
-class Session:
-
-    def test_session():
-        pass
-
-
 def test_session_instance():
     """
     Borg shall return same data.

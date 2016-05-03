@@ -3,18 +3,17 @@
 #
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
+import argparse
+import logging
 import sys
-from bluebird import log
+from importlib import import_module
 
 from bluebird import core
 from bluebird.server import app
-
-from importlib import import_module
-from flask import Flask
-import argparse
-import logging
+from bluebird.version import __version__
 
 logger = logging.getLogger(core.PROGRAM_NAME_SHORT)
+
 
 def probe_modules():
     """
@@ -25,6 +24,7 @@ def probe_modules():
     # TODO: probe for installed modules
     modules = ['rflibvirt']
     return modules
+
 
 def start(module, use_ssl=True, use_wsgi_debugger=False):
     """
@@ -68,10 +68,9 @@ def start(module, use_ssl=True, use_wsgi_debugger=False):
             ssl_context=encryption
     )
 
+
 def run():
-    """
-    Parse command line arguments and call main function.
-    """
+    """Parse command line arguments and call main function"""
 
     parser = argparse.ArgumentParser(
             prog=core.PROGRAM_NAME,
@@ -97,7 +96,7 @@ modules have been found:\n\n{}".format('\n'.join(probe_modules()))
             '--version',
             action='version',
             version="Copyright (c) 2015 SUSE LINUX GmbH\n{} v{}".format(
-                    core.PROGRAM_NAME, core.PROGRAM_VERSION
+                    core.PROGRAM_NAME, __version__
             ),
             help="Show version."
     )

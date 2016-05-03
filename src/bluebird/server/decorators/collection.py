@@ -4,8 +4,11 @@
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
 from functools import wraps
-from flask import g, redirect, url_for, request, abort
+
+from flask import request
+
 from bluebird.server.helper.registry import error
+
 
 def odata_query_parameters_not_implemented(f):
     @wraps(f)

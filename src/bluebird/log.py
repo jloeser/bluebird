@@ -3,13 +3,13 @@
 #
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
-import sys
 import logging
-from bluebird import core
+import sys
 
 if __name__ == '__main__':
     print("Error: module must be imported")
     sys.exit(1)
+
 
 # https://svn.blender.org/svnroot/bf-blender/trunk/blender/build_files/scons/tools/bcolors.py
 class esc:
@@ -24,33 +24,43 @@ class esc:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+
 class Logger(logging.Logger):
 
-    _logger = []
-    _level = None
+    __logger = []
+    __level = None
 
     def __init__(self, name):
-        self._logger.append(self)
+        self.__logger.append(self)
         logging.Logger.__init__(self, name, logging.DEBUG)
 
-        logging.addLevelName(logging.DEBUG, 'DD')
-        logging.addLevelName(logging.INFO, esc.BOLD + 'II' + esc.ENDC)
-        logging.addLevelName(logging.WARNING, esc.WARNING + 'WW' + esc.ENDC)
-        logging.addLevelName(logging.ERROR, esc.FAIL + esc.BOLD + 'EE' + esc.ENDC)
+        logging.addLevelName(
+                logging.DEBUG, 'DD'
+        )
+        logging.addLevelName(
+                logging.INFO, esc.BOLD + 'II' + esc.ENDC
+        )
+        logging.addLevelName(
+                logging.WARNING, esc.WARNING + 'WW' + esc.ENDC
+        )
+        logging.addLevelName(
+                logging.ERROR, esc.FAIL + esc.BOLD + 'EE' + esc.ENDC
+        )
 
         # console output
         console = logging.StreamHandler(sys.stdout)
-        formatter = logging.Formatter('{asctime} {levelname} [{name:<8}] >> {message}',
+        formatter = logging.Formatter(
+                '{asctime} {levelname} [{name:<8}] >> {message}',
                 "%Y-%m-%d %H:%M:%S", style='{')
         console.setFormatter(formatter)
         self.addHandler(console)
 
     def set_global_level(self, level):
-        self._level = level
-        for logger in self._logger:
+        self.__level = level
+        for logger in self.__logger:
             logger.setLevel(level)
 
     def get_global_level(self):
-        return self._level
+        return self.__level
 
 logging.setLoggerClass(Logger)

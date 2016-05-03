@@ -5,7 +5,6 @@
 # Published under the GNU Public Licence 2
 PROGRAM_NAME = 'bluebird-server'
 PROGRAM_NAME_SHORT = 'bluebird'
-PROGRAM_VERSION = '0.1'
 
 LOGGER = {
         'NAME': PROGRAM_NAME_SHORT,
@@ -24,15 +23,14 @@ MAJOR_VERSION = 1
 MINOR_VERSION = 0
 ERRATA = 0
 
-REDFISH_VERSION_MAJOR = 'v' + str(MAJOR_VERSION)
+REDFISH_MAJOR_VERSION = 'v' + str(MAJOR_VERSION)
 REDFISH_VERSION = '{}.{}.{}'.format(MAJOR_VERSION, MINOR_VERSION, ERRATA)
-
-USER = 'root'
-PASS = 'test'
 
 URL = {
         'ROOT': '/redfish',
         'SERVICEROOT': '/redfish/v{}'.format(MAJOR_VERSION),
-        'SESSIONS': '/redfish/v{}/SessionService'.format(MAJOR_VERSION),
+        'SESSIONSERVICE': '/redfish/v{}/SessionService'.format(MAJOR_VERSION),
+        'SESSIONS':
+                '/redfish/v{}/SessionService/Sessions'.format(MAJOR_VERSION),
         'SYSTEMS': '/redfish/v{}/Systems'.format(MAJOR_VERSION)
 }

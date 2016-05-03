@@ -4,9 +4,12 @@
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
 from functools import wraps
-from flask import g, redirect, url_for, request, abort
-from bluebird.server.sessions.models import Session
+
+from flask import g
+from flask import request
+
 from bluebird.server.helper.registry import error
+
 
 def login_required(f):
     @wraps(f)
@@ -18,6 +21,7 @@ def login_required(f):
             return (error('Base', 'NoValidSession'), 401)
     return decorated_function
 
+
 def xauth_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -28,6 +32,7 @@ def xauth_required(f):
             return (error('Base', 'NoValidSession'), 401)
     return decorated_function
 
+
 def basic_authentication_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -37,6 +42,7 @@ def basic_authentication_required(f):
         else:
             return (error('Base', 'NoValidSession'), 401)
     return decorated_function
+
 
 def xauth():
     """Check for X-AUTH-TOKEN header"""
@@ -49,15 +55,12 @@ def xauth():
     else:
         return False
 
+
 def basic_authentication():
     """Check for basic authentication (RFC 2617, section 2)"""
-    basic_auth = request.headers.get('Authorization')
-
-    if basic_auth:
-        result = g.session.check_basic_auth(basic_auth)
-        if result:
-            g.login = result
-            return True
-
-    return False
-
+    try:
+        basic_auth = request.headers.get('Authorization')
+        g.login = g.session.check_basic_auth(basic_auth)
+        return True
+    except:
+        return False

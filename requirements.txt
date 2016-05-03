@@ -1,0 +1,6 @@
+# Requirements file for pip
+# Use it with pip install -r requirements.txt
+
+Flask>=0.10.1
+libvirt-python>=1.3.2
+simplepam>=0.1.5

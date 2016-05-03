@@ -5,25 +5,33 @@
 # Published under the GNU Public Licence 2
 import socket
 
+
 class Server():
 
-    _instance = None
-    _hostname = None
+    __instance = None
+    __hostname = None
 
     def __new__(cls, *args, **kwargs):
-        if not cls._instance:
-            cls._instance = super(Server, cls).__new__(
+        if not cls.__instance:
+            cls.__instance = super(Server, cls).__new__(
                     cls, *args, **kwargs
             )
-        Server._hostname = socket.getfqdn()
-        return cls._instance
+        try:
+            Server.__hostname = socket.getfqdn()
+        except:
+            pass
+        return cls.__instance
 
     def get_fqdn(self):
-        return self._hostname
+        if not self.__hostname:
+            return 'N/A'
+        else:
+            return self.__hostname
 
     def get_ip(self):
-        try:
-            ip = socket.gethostbyname(self._hostname)
-            return ip
-        except socket.gaierror:
-            return ''
+        if self.__hostname:
+            try:
+                return socket.gethostbyname(self.__hostname)
+            except:
+                pass
+        return 'N/A'

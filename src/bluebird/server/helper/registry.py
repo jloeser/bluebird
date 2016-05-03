@@ -4,9 +4,11 @@
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
 # from flask import
-from flask import render_template, current_app
 import json
 import logging
+
+from flask import current_app
+from flask import render_template
 
 logger = logging.getLogger('message')
 
@@ -18,12 +20,13 @@ REGISTRIES = {
 CODE = 'BluebirdServer.0.10.ExtendedInfo'
 TYPE = '/redfish/v1/$metadata#Message.1.0.0.Message'
 
+
 def get_message(registry, id):
     if registry in REGISTRIES.keys():
         filename = current_app.static_folder + REGISTRIES[registry]
         try:
-            with open(filename) as file:
-                data_json = json.loads(file.read())
+            with open(filename) as f:
+                data_json = json.loads(f.read())
 
                 version = data_json['Version'].split('.')
                 prefix = data_json['RegistryPrefix']
@@ -52,17 +55,15 @@ def get_message(registry, id):
 
     return False
 
+
 def error(registry, id):
     message = get_message(registry, id)
     if message:
-        return render_template('Error.json',
-                code=CODE,
-                type=TYPE,
+        return render_template(
+                'Error.json', code=CODE, type=TYPE,
                 message='See @Message.ExtendedInfo for more information.',
-                errors=[message]
-        )
+                errors=[message])
 
-    return render_template('Error.json', code="Base.1.0.GeneralError",
-                message="A general error has occurred."
-    )
-
+    return render_template(
+            'Error.json', code="Base.1.0.GeneralError",
+            message="A general error has occurred.")

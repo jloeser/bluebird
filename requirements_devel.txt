@@ -1,0 +1,10 @@
+# Requirements file for pip
+# Use it with pip install -r requirements_devel.txt
+# Add project to pip with ./setup.py develop
+
+-r requirements.txt
+flake8
+pytest
+mock
+bumpversion
+isort

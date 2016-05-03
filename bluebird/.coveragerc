@@ -1,0 +1,14 @@
+[paths]
+source =
+   src/bluebird
+   */site-packages/bluebird
+
+[run]
+branch = True
+source = bluebird
+parallel = true
+
+[report]
+show_missing = true
+precision = 2
+omit = *migrations*

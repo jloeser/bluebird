@@ -3,10 +3,13 @@
 #
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
-from bluebird.server.sessions.models import BluebirdAuthentication
-from rflibvirt import NAME
 import logging
+
 from simplepam import authenticate as pam_authenticate
+
+from bluebird.server.sessions.models import BluebirdAuthentication
+
+from . import NAME
 
 logger = logging.getLogger(NAME)
 

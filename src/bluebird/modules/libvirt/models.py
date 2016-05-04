@@ -4,9 +4,12 @@
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
 import logging
+
 import libvirt
-from rflibvirt import NAME
+
 from bluebird.server.sessions.models import Session
+
+from . import NAME
 
 LIBVIRT_URI = 'qemu:///system'
 ACTIVE = 0

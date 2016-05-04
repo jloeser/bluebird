@@ -11,10 +11,9 @@ NAME = 'libvirt'
 import os
 TEMPLATES = os.path.dirname(__file__) + '/templates'
 
-from rflibvirt.views import module
-
+from .views import module
+from .authentication import LocalUser
 from bluebird.server.sessions.models import Session
-from rflibvirt.authentication import LocalUser
 
 Session.set_authentication_instance(LocalUser())
 

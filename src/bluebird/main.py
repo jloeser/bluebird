@@ -22,7 +22,7 @@ def probe_modules():
     return: [] -- list of str which can be imported via import_module()
     """
     # TODO: probe for installed modules
-    modules = ['rflibvirt']
+    modules = ['libvirt']
     return modules
 
 
@@ -80,7 +80,7 @@ def run():
     parser.add_argument(
             'module',
             nargs='?',
-            default='rflibvirt',
+            default='bluebird.modules.libvirt',
             help="Specify the backend module. If no module is\n\
 specified, the first one gets taken. Following\n\
 modules have been found:\n\n{}".format('\n'.join(probe_modules()))

@@ -3,15 +3,25 @@
 #
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
+import json
+
+from flask import Blueprint
+from flask import abort
+from flask import g
+from flask import jsonify
+from flask import render_template
+from flask import request
+
 from bluebird.core import URL
-from flask import Blueprint, jsonify, g, render_template, abort, request
 from bluebird.server.base.models import Server
-from bluebird.server.sessions.decorators import xauth_required, login_required
-from rflibvirt.models import LibvirtMonitor, LibvirtManage
-from rflibvirt import TEMPLATES
 from bluebird.server.decorators import collection
 from bluebird.server.helper.registry import error
-import json
+from bluebird.server.sessions.decorators import login_required
+from bluebird.server.sessions.decorators import xauth_required
+
+from . import TEMPLATES
+from .models import LibvirtManage
+from .models import LibvirtMonitor
 
 module = Blueprint('system', __name__, url_prefix=URL['SERVICEROOT'],
         template_folder=TEMPLATES)

@@ -3,6 +3,8 @@
 #
 # Author Jan Löser <jloeser@suse.de>
 # Published under the GNU Public Licence 2
+from bluebird import log
+
 PROGRAM_NAME = 'bluebird-server'
 PROGRAM_NAME_SHORT = 'bluebird'
 

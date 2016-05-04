@@ -29,14 +29,13 @@ class Environment:
         return self.__client
 
     def set_authentication_result(self, result):
-        session = Session()
-
         if result is None:
-            session._Session__authentication_instance = None
+            Session.__dict__['_Session__shared_state']\
+                    ['_Session__authentication_instance'] = None
         else:
             mock_auth = mock.create_autospec(BluebirdAuthentication)
             mock_auth.authenticate.return_value = result
-            session.set_authentication_instance(mock_auth)
+            Session.set_authentication_instance(mock_auth)
 
 
 @pytest.fixture(scope='module')

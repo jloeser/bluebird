@@ -6,6 +6,7 @@
 import argparse
 import logging
 import sys
+import os
 from importlib import import_module
 
 from bluebird import core
@@ -14,6 +15,8 @@ from bluebird.version import __version__
 
 logger = logging.getLogger(core.PROGRAM_NAME_SHORT)
 
+MODULES_DIR = 'bluebird.modules.'
+
 
 def probe_modules():
     """
@@ -21,8 +24,17 @@ def probe_modules():
 
     return: [] -- list of str which can be imported via import_module()
     """
-    # TODO: probe for installed modules
-    modules = ['libvirt']
+    modules = []
+    base_dir = os.path.dirname(__file__)
+    for directory in os.listdir(base_dir + '/modules'):
+        try:
+            system = import_module(MODULES_DIR + directory)
+            assert system.NAME
+            assert system.views
+            modules.append(system.NAME)
+        except AttributeError:
+            pass
+
     return modules
 
 
@@ -37,21 +49,24 @@ def start(module, use_ssl=True, use_wsgi_debugger=False):
     param: use_ssl -- bool; activates/deactivates SSL support (default True)
     """
     try:
+        if not module.startswith(MODULES_DIR):
+            module = MODULES_DIR + module
+
         system = import_module(module)
         logger.debug(" * Module '{}' found.".format(
                 system.NAME
         ))
-    except ImportError as e:
+
+        app.config['MODULE'] = system.NAME
+        app.register_blueprint(system.views.module)
+    except Exception as e:
         logger.error(str(e))
         logger.error("Couldn't import module '{}'. Exit.".format(
             module
         ))
         sys.exit(1)
 
-    app.config['MODULE'] = system.NAME
-    app.register_blueprint(system.views.module)
     app.config.from_object(core)
-
     app.config['DEBUG'] = use_wsgi_debugger
 
     if use_ssl:
@@ -80,7 +95,7 @@ def run():
     parser.add_argument(
             'module',
             nargs='?',
-            default='bluebird.modules.libvirt',
+            default=MODULES_DIR + 'libvirt',
             help="Specify the backend module. If no module is\n\
 specified, the first one gets taken. Following\n\
 modules have been found:\n\n{}".format('\n'.join(probe_modules()))

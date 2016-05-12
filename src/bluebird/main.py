@@ -5,8 +5,8 @@
 # Published under the GNU Public Licence 2
 import argparse
 import logging
-import sys
 import os
+import sys
 from importlib import import_module
 
 from bluebird import core

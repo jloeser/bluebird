@@ -29,8 +29,6 @@ module = Blueprint('system', __name__, url_prefix=URL['SERVICEROOT'],
 @module.before_request
 def set_libvirt_object():
     g.libvirt = LibvirtMonitor()
-    # probe for domains which may have changed
-    g.libvirt.probe()
 
 @module.route('/Systems', methods=['GET'])
 @collection.odata_query_parameters_not_implemented

@@ -17,11 +17,10 @@ from bluebird.server.decorators import collection
 from bluebird.server.helper.registry import error
 from bluebird.server.sessions.decorators import login_required
 from bluebird.server.sessions.decorators import xauth_required
-from bluebird.server.sessions.models import Session
 from bluebird.server.sessions.exceptions import NoAuthModule
 from bluebird.server.sessions.exceptions import NoValidSession
 from bluebird.server.sessions.exceptions import SessionLimitExceeded
-
+from bluebird.server.sessions.models import Session
 
 module = Blueprint('sessions', __name__)
 

@@ -7,11 +7,13 @@ import logging
 
 import libvirt
 
-from bluebird.server.sessions.models import Session
+from bluebird.exceptions import NoSystemFound
 
 from . import NAME
 
-LIBVIRT_URI = 'qemu:///system'
+MONITOR_URI = 'qemu:///system'
+MANAGER_URI = 'qemu:///system'
+
 ACTIVE = 0
 INACTIVE = 1
 
@@ -21,18 +23,19 @@ ACTIONS = {
 }
 
 DOMAIN_STATES = {
-        libvirt.VIR_DOMAIN_RUNNING  : "running",
-        libvirt.VIR_DOMAIN_BLOCKED  : "idle",
-        libvirt.VIR_DOMAIN_PAUSED   : "paused",
-        libvirt.VIR_DOMAIN_SHUTDOWN : "in shutdown",
-        libvirt.VIR_DOMAIN_SHUTOFF  : "shut off",
-        libvirt.VIR_DOMAIN_CRASHED  : "crashed",
-        libvirt.VIR_DOMAIN_NOSTATE  : "no state"
+        libvirt.VIR_DOMAIN_RUNNING:  "running",
+        libvirt.VIR_DOMAIN_BLOCKED:  "idle",
+        libvirt.VIR_DOMAIN_PAUSED:   "paused",
+        libvirt.VIR_DOMAIN_SHUTDOWN: "in shutdown",
+        libvirt.VIR_DOMAIN_SHUTOFF:  "shut off",
+        libvirt.VIR_DOMAIN_CRASHED:  "crashed",
+        libvirt.VIR_DOMAIN_NOSTATE:  "no state"
 }
 
 NOT_AVAILABLE = "N/A"
 
 logger = logging.getLogger(NAME)
+
 
 class Domain(libvirt.virDomain):
 
@@ -81,71 +84,58 @@ class Domain(libvirt.virDomain):
         pass
 
 
-
 class LibvirtMonitor():
 
-    __instance = None
+    __shared_state = {}
     __initialized = False
-    __conn = None
-    __domains = {}
 
-    def __new__(cls, *args, **kwargs):
-        if not cls.__instance:
-            cls.__instance = super(LibvirtMonitor, cls).__new__(
-                    cls, *args, **kwargs
-            )
-        return cls.__instance
+    def __init__(self, uri=MONITOR_URI):
+        self.__dict__ = LibvirtMonitor.__shared_state
 
-    def __init__(self):
         if not LibvirtMonitor.__initialized:
             try:
-                self.__conn = libvirt.openReadOnly(LIBVIRT_URI)
+                self.conn = libvirt.openReadOnly(uri)
+
+                self.domains = {}
+                logger.info(" * Running hypervisor: {0} {1}".format(
+                        self.conn.getType(),
+                        self._get_version_str(self.conn.getVersion())
+                ))
+                logger.info(" * Library: {}".format(
+                        self._get_version_str(self.conn.getLibVersion())
+                ))
+
+                self.collect_domains()
+                LibvirtMonitor.__initialized = True
+
             except libvirt.libvirtError:
-                raise NoSystemFoundException
+                raise NoSystemFound
 
-            if not self.__conn:
-                raise NoSystemFoundException
-
-            self.__domains = {}
-            logger.info(" * Running hypervisor: {0} {1}".format(
-                    self.__conn.getType(),
-                    self.__get_version_str(self.__conn.getVersion())
-            ))
-            logger.info(" * Library: {}".format(
-                    self.__get_version_str(self.__conn.getLibVersion())
-            ))
-
-            self.__initialized = True
-
-    def __collect_domains(self):
-        self.__domains = {}
-        if self.__conn.listAllDomains():
-            for domain in self.__conn.listAllDomains():
-                self.__domains[domain.UUIDString()] = Domain(domain)
-
-    def __get_version_str(self, version):
+    def _get_version_str(self, version):
         if isinstance(version, int):
-           version = str(version).split('0')
-           version = list(filter(('').__ne__, version))
-           return '.'.join(version)
+            version = str(version).split('0')
+            version = list(filter(('').__ne__, version))
+            return '.'.join(version)
         elif isinstance(version, str):
             return version
         else:
             raise TypeError
 
-    def probe(self):
-        self.__collect_domains()
-        logger.info(" * Definded domains: {}".format(len(self.__domains)))
+    def collect_domains(self):
+        self.domains = {}
+        if self.conn.listAllDomains():
+            for domain in self.conn.listAllDomains():
+                self.domains[domain.UUIDString()] = Domain(domain)
 
-    @property
-    def domains(self):
-        return self.__domains
+    def probe(self):
+        self.collect_domains()
+        logger.info(" * Definded domains: {}".format(len(self.domains)))
 
     def get_domains(self):
-        return self.__domains.values()
+        return self.domains.values()
 
     def get_domain(self, name):
-        for uuid, domain in self.__domains.items():
+        for uuid, domain in self.domains.items():
             if domain.name() == name:
                 return domain
         return None
@@ -159,11 +149,8 @@ class LibvirtMonitor():
 class LibvirtManage():
 
     def __init__(self, credentials):
-        self.__username = credentials[0]
-        self.__password = credentials[1]
+        self.username = credentials[0]
+        self.password = credentials[1]
 
     def start(self, domainname):
         pass
-
-class LibvirtManageLocalUser(LibvirtManage):
-    pass

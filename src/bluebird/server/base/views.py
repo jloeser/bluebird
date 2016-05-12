@@ -9,8 +9,8 @@ from flask import g
 from flask import redirect
 from flask import render_template
 
-from bluebird.core import REDFISH_VERSION
 from bluebird.core import REDFISH_MAJOR_VERSION
+from bluebird.core import REDFISH_VERSION
 from bluebird.core import URL
 from bluebird.server.base.models import Server
 from bluebird.server.sessions.decorators import login_required

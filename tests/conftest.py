@@ -19,14 +19,10 @@ from bluebird.server.sessions.models import BluebirdAuthentication
 class Environment:
 
     def __init__(self):
-        self.__server = bluebird.server.app
-        self.__server.testing = True
-        self.__server.config.from_object(bluebird.core)
-        self.__client = self.__server.test_client()
-
-    @property
-    def client(self):
-        return self.__client
+        self.server = bluebird.server.app
+        self.server.testing = True
+        self.server.config.from_object(bluebird.core)
+        self.client = self.server.test_client()
 
     def set_authentication_result(self, result):
         if result is None:

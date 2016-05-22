@@ -11,6 +11,9 @@ NAME = 'libvirt'
 import os
 TEMPLATES = os.path.dirname(__file__) + '/templates'
 
+MONITOR_URI = 'qemu:///system'
+MANAGE_URI  = 'qemu+libssh2://{username}@localhost:2222/system'
+
 from .views import module
 from .authentication import LocalUser
 from bluebird.server.sessions.models import Session

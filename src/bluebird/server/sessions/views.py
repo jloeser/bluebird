@@ -6,7 +6,6 @@
 import json
 
 from flask import Blueprint
-from flask import abort
 from flask import g
 from flask import make_response
 from flask import render_template
@@ -53,8 +52,8 @@ def create_session():
 
     except (NoAuthModule,
             NoValidSession,
-            SessionLimitExceeded) as err:
-        return err.response()
+            SessionLimitExceeded) as e:
+        return e.response()
 
 
 @module.route(URL['SESSIONS'], methods=['GET'])

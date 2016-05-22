@@ -7,3 +7,11 @@ USER = 'tux'
 PASS = 'pass'
 
 MIMETYPE = 'application/json'
+
+
+def get_basic_auth(username, password):
+    import base64
+
+    return b'Basic ' + base64.b64encode(
+            bytes(username, 'utf-8') + b':' + bytes(password, 'utf-8')
+    )

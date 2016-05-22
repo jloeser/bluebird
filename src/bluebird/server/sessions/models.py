@@ -34,9 +34,7 @@ class Session():
     __authentication_instance = None
 
     def __init__(self):
-
         self.__dict__ = Session.__shared_state
-        logger.debug(" * Sessions initialized.")
 
     def get_timeout():
         return Session.__session_timeout_min

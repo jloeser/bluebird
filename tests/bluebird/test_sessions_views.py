@@ -9,6 +9,7 @@ import pytest
 from core import MIMETYPE
 from core import PASS
 from core import USER
+from core import get_basic_auth
 
 from bluebird.core import URL
 
@@ -98,22 +99,15 @@ def test_basic_auth(env):
     Services shall not require a client to create a session when Basic
     Auth is used.
     """
-    import base64
 
-    basic_auth = b'Basic ' + base64.b64encode(
-            bytes(USER + 'x', 'utf-8') + b':' + bytes(PASS, 'utf-8')
-    )
-
+    basic_auth = get_basic_auth(USER + 'x', PASS)
     env.set_authentication_result(False)
     response = env.client.get(
             URL['SESSIONS'],
             headers={'Authorization': bytes.decode(basic_auth)})
     assert response.status_code == 401
 
-    basic_auth = b'Basic ' + base64.b64encode(
-            bytes(USER, 'utf-8') + b':' + bytes(PASS, 'utf-8')
-    )
-
+    basic_auth = get_basic_auth(USER, PASS)
     env.set_authentication_result(True)
     response = env.client.get(
             URL['SESSIONS'],

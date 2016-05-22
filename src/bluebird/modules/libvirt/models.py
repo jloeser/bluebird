@@ -10,15 +10,14 @@ import libvirt
 from bluebird.exceptions import NoSystemFound
 
 from . import NAME
-
-MONITOR_URI = 'qemu:///system'
-MANAGER_URI = 'qemu:///system'
+from . import MONITOR_URI
+from . import MANAGE_URI
 
 ACTIVE = 0
 INACTIVE = 1
 
 ACTIONS = {
-        'On': 'start',
+        'On': 'create',
         'ForceOff': 'destroy'
 }
 
@@ -76,12 +75,6 @@ class Domain(libvirt.virDomain):
 
     def get_ostype(self):
         return self.OSType()
-
-    def start(self, username):
-        pass
-
-    def destroy(self, username):
-        pass
 
 
 class LibvirtMonitor():
@@ -148,9 +141,46 @@ class LibvirtMonitor():
 
 class LibvirtManage():
 
-    def __init__(self, credentials):
+    def __init__(self, credentials, uri=MANAGE_URI):
         self.username = credentials[0]
         self.password = credentials[1]
 
-    def start(self, domainname):
-        pass
+        auth = [[libvirt.VIR_CRED_AUTHNAME, libvirt.VIR_CRED_PASSPHRASE],
+                self._request_credentials, None]
+
+        try:
+            uri = uri.format(username=self.username)
+            self.conn = libvirt.openAuth(uri, auth, 0)
+        except (KeyError, IndexError):
+            logger.debug("User not set")
+        except libvirt.libvirtError as e:
+            logger.error(e)
+
+    def _request_credentials(self, credentials, user_data):
+        for credential in credentials:
+            if credential[0] == libvirt.VIR_CRED_AUTHNAME:
+                credential[4] = self.username
+            elif credential[0] == libvirt.VIR_CRED_PASSPHRASE:
+                credential[4] = self.password
+        return 0
+
+    def reset(self, domain, reset_type):
+        if reset_type not in ACTIONS:
+            raise Exception
+
+        target = None
+        for dom in self.conn.listAllDomains():
+            if dom.name() == domain:
+                target = dom
+                break
+
+        if target:
+            if reset_type in ACTIONS:
+                execute = getattr(target, ACTIONS[reset_type])
+                try:
+                    execute()
+                except libvirt.libvirtError as e:
+                    if 'already running' not in str(e):
+                        raise Exception
+                    else:
+                        pass
